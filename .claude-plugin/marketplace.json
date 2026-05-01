@@ -4,108 +4,108 @@
     "name": "luozitianyuan"
   },
   "metadata": {
-    "description": "锦成的 AI 工作流 Skills — 10 个 Claude Code skill：澄清、规划、学习、写作、发布、抓取",
+    "description": "锦成的 AI 工作流工具箱 — 从两年深度使用 Claude Code 的实战中提炼，做成 10 个 jc-* skill",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "jc-clarifier",
-      "description": "万能问题澄清器——把模糊需求通过追问漏斗转化为清晰、精确的问题，最终输出优质提示词。",
+      "description": "万能问题澄清器。AI 不应该在你还没想清楚的时候就帮你行动——用追问漏斗把模糊需求逼成清晰、精确的问题，最终输出一条可直接执行的提示词。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "thinking-tools",
-      "keywords": ["clarification", "prompt", "BROK", "thinking", "chinese"],
+      "keywords": ["clarification", "prompt-engineering", "BROK", "thinking", "chinese"],
       "skills": ["./skills/jc-clarifier"]
     },
     {
       "name": "jc-ask-anything",
-      "description": "把模糊问题打磨成可被回答的精确请求。识别 XY 问题、压缩问题、智能路由（AI 解决 vs 问人）。",
+      "description": "把模糊问题打磨成可被回答的精确请求。识别 XY 问题、压缩问题、智能路由（这个问题该问 AI 还是问人）。Polanyi 默会知识理论的工程化实现。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "thinking-tools",
-      "keywords": ["question", "xy-problem", "phrasing", "consultation"],
+      "keywords": ["question-quality", "xy-problem", "phrasing", "consultation", "chinese"],
       "skills": ["./skills/jc-ask-anything"]
     },
     {
       "name": "jc-plan",
-      "description": "AI 任务管家——自然语言记录任务、智能排程、塞进飞书日历、到点提醒。",
+      "description": "AI 任务管家。对话里随口说的任务、计划、提醒，自然语言进、智能排程、自动塞进飞书日历、到点提醒。不再写一份立刻被遗忘的待办清单。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "productivity",
-      "keywords": ["task", "calendar", "feishu", "scheduling", "chinese"],
+      "keywords": ["task-management", "calendar", "feishu", "scheduling", "chinese"],
       "skills": ["./skills/jc-plan"]
     },
     {
       "name": "jc-daily-planning",
-      "description": "锦成的日规划助手——基于 WOOP+54%心法+砍事原则，每日 5-10 分钟产出可执行日计划。",
+      "description": "锦成的日规划助手。基于 WOOP + 54% 心法 + 砍事原则，每天 5-10 分钟产出一份『可执行』的日计划——不是排满，是排准。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "productivity",
-      "keywords": ["daily-plan", "woop", "productivity", "chinese"],
+      "keywords": ["daily-planning", "WOOP", "productivity", "focus", "chinese"],
       "skills": ["./skills/jc-daily-planning"]
     },
     {
       "name": "jc-handoff",
-      "description": "把当前 Claude Code 会话打包成新会话的启动文档：任务、进度、决策、被否方向、文件改动、隐式偏好。",
+      "description": "Claude Code 会话交接打包器。把当前会话的任务、进度、决策、被否方向、文件改动、隐式偏好提炼成一份可复制粘贴的启动文档。换窗口、换设备、换模型，下一段对话直接接得上。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
-      "category": "productivity",
-      "keywords": ["handoff", "session", "context", "claude-code"],
+      "category": "workflow-infrastructure",
+      "keywords": ["handoff", "session", "context-packing", "claude-code", "chinese"],
       "skills": ["./skills/jc-handoff"]
     },
     {
       "name": "jc-source-of-truth",
-      "description": "项目级 SOURCE_OF_TRUTH.md 数据权威索引管理。初始扫描 + 增量更新 + 冲突检查。",
+      "description": "项目级数据权威索引。维护一份 SOURCE_OF_TRUTH.md，告诉 AI 和你自己『这个数据在哪个文件』『同名数据以哪份为准』。解决多文件项目里的信息错位与冲突。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
-      "category": "productivity",
-      "keywords": ["source-of-truth", "index", "project", "documentation"],
+      "category": "workflow-infrastructure",
+      "keywords": ["source-of-truth", "index", "documentation", "project-structure", "chinese"],
       "skills": ["./skills/jc-source-of-truth"]
     },
     {
       "name": "jc-learn-anything",
-      "description": "通用学习加速器——三阶段（采集/消化/检验）学透任何领域。喂材料或只给主题名都行。",
+      "description": "通用学习加速器。三阶段流程（采集 → 消化 → 检验）学透任何领域：喂材料就给结构化笔记 + 领域地图 + 专家思维模型；只给主题名也能从零搭建知识框架。理论锚点：Bloom 的两个西格玛。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "learning",
-      "keywords": ["learning", "study", "knowledge", "socratic", "chinese"],
+      "keywords": ["learning", "study", "bloom", "socratic", "chinese"],
       "skills": ["./skills/jc-learn-anything"]
     },
     {
       "name": "jc-write",
-      "description": "AI 辅助原创写作——栋哥五层拆解 + 苏格拉底追问，找到自己的角度，对接个人文风 DNA 产出初稿。",
+      "description": "AI 辅助原创写作。从『看到一个内容被触动』到『写出只有你能写的版本』——栋哥五层拆解 + 苏格拉底追问帮你找到独特角度，再对接你的个人文风 DNA 产出初稿。不是二创洗稿。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["writing", "original", "style-dna", "socratic", "chinese"],
+      "keywords": ["writing", "originality", "style-dna", "socratic", "chinese"],
       "skills": ["./skills/jc-write"]
     },
     {
       "name": "jc-wechat-publish",
-      "description": "Markdown 一键发公众号：扫图位 → Gemini 生图 → 黄叔风格 HTML 排版 → 上传公众号草稿。",
+      "description": "Markdown → 公众号草稿全自动流水线。扫描图位 → Gemini 生图 → 黄叔设计系统排版成 HTML → 调用 limyai API 发布到公众号草稿箱。一行命令，一杯咖啡的时间。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["wechat", "publishing", "markdown", "gemini", "chinese"],
+      "keywords": ["wechat", "publishing", "markdown", "gemini", "html", "chinese"],
       "skills": ["./skills/jc-wechat-publish"]
     },
     {
       "name": "jc-zhuagongzhonghao",
-      "description": "抓取公众号热文并生成智能评分报告。dajiala API + Wilson Score 算法，输出杂志风格 HTML。",
+      "description": "公众号热文抓取与智能评分系统。dajiala API 按关键词抓取 + Wilson Score 算法（流量 40% / 信任 50% / 内容信号 10%）评分排序 + 杂志风格 HTML 报告（The Signal），支持搜索/排序/筛选/收藏/导出。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["wechat", "scraping", "ranking", "wilson-score", "chinese"],
+      "keywords": ["wechat", "content-scraping", "ranking", "wilson-score", "chinese"],
       "skills": ["./skills/jc-zhuagongzhonghao"]
     }
   ]
