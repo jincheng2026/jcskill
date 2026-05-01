@@ -1,0 +1,112 @@
+{
+  "name": "jincheng-skills",
+  "owner": {
+    "name": "luozitianyuan"
+  },
+  "metadata": {
+    "description": "锦成的 AI 工作流 Skills — 10 个 Claude Code skill：澄清、规划、学习、写作、发布、抓取",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "jc-clarifier",
+      "description": "万能问题澄清器——把模糊需求通过追问漏斗转化为清晰、精确的问题，最终输出优质提示词。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "thinking-tools",
+      "keywords": ["clarification", "prompt", "BROK", "thinking", "chinese"],
+      "skills": ["./skills/jc-clarifier"]
+    },
+    {
+      "name": "jc-ask-anything",
+      "description": "把模糊问题打磨成可被回答的精确请求。识别 XY 问题、压缩问题、智能路由（AI 解决 vs 问人）。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "thinking-tools",
+      "keywords": ["question", "xy-problem", "phrasing", "consultation"],
+      "skills": ["./skills/jc-ask-anything"]
+    },
+    {
+      "name": "jc-plan",
+      "description": "AI 任务管家——自然语言记录任务、智能排程、塞进飞书日历、到点提醒。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["task", "calendar", "feishu", "scheduling", "chinese"],
+      "skills": ["./skills/jc-plan"]
+    },
+    {
+      "name": "jc-daily-planning",
+      "description": "锦成的日规划助手——基于 WOOP+54%心法+砍事原则，每日 5-10 分钟产出可执行日计划。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["daily-plan", "woop", "productivity", "chinese"],
+      "skills": ["./skills/jc-daily-planning"]
+    },
+    {
+      "name": "jc-handoff",
+      "description": "把当前 Claude Code 会话打包成新会话的启动文档：任务、进度、决策、被否方向、文件改动、隐式偏好。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["handoff", "session", "context", "claude-code"],
+      "skills": ["./skills/jc-handoff"]
+    },
+    {
+      "name": "jc-source-of-truth",
+      "description": "项目级 SOURCE_OF_TRUTH.md 数据权威索引管理。初始扫描 + 增量更新 + 冲突检查。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["source-of-truth", "index", "project", "documentation"],
+      "skills": ["./skills/jc-source-of-truth"]
+    },
+    {
+      "name": "jc-learn-anything",
+      "description": "通用学习加速器——三阶段（采集/消化/检验）学透任何领域。喂材料或只给主题名都行。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "learning",
+      "keywords": ["learning", "study", "knowledge", "socratic", "chinese"],
+      "skills": ["./skills/jc-learn-anything"]
+    },
+    {
+      "name": "jc-write",
+      "description": "AI 辅助原创写作——栋哥五层拆解 + 苏格拉底追问，找到自己的角度，对接个人文风 DNA 产出初稿。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "content-creation",
+      "keywords": ["writing", "original", "style-dna", "socratic", "chinese"],
+      "skills": ["./skills/jc-write"]
+    },
+    {
+      "name": "jc-wechat-publish",
+      "description": "Markdown 一键发公众号：扫图位 → Gemini 生图 → 黄叔风格 HTML 排版 → 上传公众号草稿。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "content-creation",
+      "keywords": ["wechat", "publishing", "markdown", "gemini", "chinese"],
+      "skills": ["./skills/jc-wechat-publish"]
+    },
+    {
+      "name": "jc-zhuagongzhonghao",
+      "description": "抓取公众号热文并生成智能评分报告。dajiala API + Wilson Score 算法，输出杂志风格 HTML。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "content-creation",
+      "keywords": ["wechat", "scraping", "ranking", "wilson-score", "chinese"],
+      "skills": ["./skills/jc-zhuagongzhonghao"]
+    }
+  ]
+}
