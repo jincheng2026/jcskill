@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "jc-koubo-shuping.baseline-lock.v1",
+  "baselineId": "0708-0721-approved-baseline-v3-single-line",
+  "status": "human-approved-single-line-bilingual-caption-baseline",
+  "approvedEvidence": [
+    "0721-01 take2 static preview v6 accepted by user",
+    "0721-01 take2 pilot v3 accepted by user",
+    "0721-01 take2 full v1 rendered from the same caption source",
+    "0721-03 user-provided bilingual black-plate subtitle references",
+    "0721-03 cycle 3 attempt 1 subtitle adjustment accepted by user"
+  ],
+  "latestHumanApproval": {
+    "scope": "caption-style",
+    "decision": "accepted",
+    "recordedAt": "2026-07-21T23:13:49+08:00",
+    "artifact": "not-distributed",
+    "artifactSha256": "384668bb343718aa6bccec56b99807e57401b9b381a8704dd33e4d771038d944",
+    "evidenceSource": "private-human-acceptance-record"
+  },
+  "template": "../../remotion-template",
+  "layout720": {
+    "progressTop": 104,
+    "cardTop": 160,
+    "cardLeft": 30,
+    "cardWidth": 660,
+    "cardHeight": 166,
+    "captionLeft": 42,
+    "captionTop": 890,
+    "captionWidth": 636,
+    "captionHeight": 264
+  },
+  "captionPolicy": {
+    "maxLines": 1,
+    "fontSizes720": [54, 48, 42, 38],
+    "browserAutoWrap": false,
+    "englishRequired": true,
+    "englishMaxLines": 1,
+    "separateLanguagePlates": true,
+    "plateColor": "rgba(4,6,8,0.84)",
+    "plateRadius720": 8,
+    "whiteFill": "#F8FAFD",
+    "fontWeightZh": 300,
+    "fontWeightEn": 300,
+    "chineseFontFamily": "PingFang SC",
+    "englishFontFamily": "Helvetica Neue",
+    "plateBorder": false,
+    "thickStroke": false,
+    "yellowHighlights": false,
+    "transitionVisibility": "visible_from_first_frame"
+  }
+}

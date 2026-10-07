@@ -1,0 +1,26 @@
+interface:
+  display_name: 对标内容入库
+  short_description: 把用户已选中的社媒内容、图片和视频去重、转写并存进工作文件夹的对标素材库。
+  default_prompt: 使用 $jc-benchmark-intake，把我复制的社媒作品信息和下载好的媒体完整存进对标素材，并完成去重、转写和严格检查。
+
+compatibility:
+  canonical_format: agent-skills
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible
+  trust:
+    source_tier: local
+    remote_inline_execution: forbid
+    remote_metadata_policy: 只使用用户提供的材料、本地媒体和工作文件夹里的文件，不执行远程代码。
+  permissions:
+    network: 只有转写时调用火山引擎豆包语音（经 jc-zhuanxie）；除非用户另行提供公开图片 URL，不扩大采集范围。
+    file_write: 只写工作文件夹的 市场调研/对标素材/（含 .staging/ 和 _入库检查报告.md）和 回收站/ 里可恢复的转写中间版本。
+    subprocess: 只运行本地媒体检查、jc-zhuanxie 转写、本地时间码字幕生成和文件移动命令。
+    interactive: 不需要交互式登录或授权；缺火山 Key 时由用户自己在终端保存。
+  degradation:
+    openai: 直接读取 SKILL.md 和本地资源执行。
+    claude: 直接读取 SKILL.md 和本地资源执行。
+    generic: 无 Skill 注入时按入库规范手动执行，但不得跳过校正版验收和最终清理。
+    agent-skills-compatible: 以本 Skill 文件夹的 SKILL.md 为准。

@@ -1,0 +1,52 @@
+{
+  "should_trigger": [
+    {
+      "prompt": "复盘 T001",
+      "expect": "按 T 编号在「已发布」里找到档案，读 12 小时和 7 天的数据和逐字稿，抓评论原话，写好先给用户看"
+    },
+    {
+      "prompt": "这条该复盘了",
+      "expect": "用 stats.py due 找到 7 天数据齐了还没复盘的档案；7 天数据没齐时说明缺哪个平台哪个时间点"
+    },
+    {
+      "prompt": "做个复盘，写进档案",
+      "expect": "先在聊天里给用户看全文，用户说行了才用 stats.py review 写进 内容.md 的「复盘」一节"
+    },
+    {
+      "prompt": "做轻复盘，给我下一篇候选动作",
+      "expect": "原因必须附对照、比比例；最多 3 个候选，不替用户选"
+    },
+    {
+      "prompt": "这篇数据很低，没什么可复盘的",
+      "expect": "固定应答：单篇数据不足是正常的，价值在多篇对比，积累 3 到 5 条再看趋势；然后照常完成真实记录"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "prompt": "帮我写这个选题的口播稿",
+      "route": "jc-jiaocheng-video"
+    },
+    {
+      "prompt": "视频发出去了，帮我建档，到点抓数据",
+      "route": "jc-publish-closeout"
+    },
+    {
+      "prompt": "把这几条复盘的结论落进我的判断库",
+      "route": "jc-skill-writer"
+    },
+    {
+      "prompt": "扒一下这条对标视频的评论区，看看大家想要什么",
+      "route": "jc-media-research"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "prompt": "把 12 小时和 7 天的数据抓回档案",
+      "route": "jc-publish-closeout；本 Skill 只读抓好的数写复盘"
+    },
+    {
+      "prompt": "分析这批评论，提炼人群需求",
+      "route": "jc-media-research；本 Skill 只原样摘几条关键评论"
+    }
+  ]
+}

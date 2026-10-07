@@ -1,0 +1,318 @@
+{
+  "synthetic": true,
+  "schema_version": 2,
+  "sources": [
+    {
+      "source_id": "base",
+      "title": "合成原稿",
+      "text": "我先把本周的会议纪要放进文件夹，再让 AI 按项目归类。\n\n所有结论都附原文链接，我逐条核对后发给同事。\n\n它负责整理，我负责最后的判断。",
+      "paragraphs": [
+        {
+          "id": "1",
+          "text": "我先把本周的会议纪要放进文件夹，再让 AI 按项目归类。"
+        },
+        {
+          "id": "2",
+          "text": "所有结论都附原文链接，我逐条核对后发给同事。"
+        },
+        {
+          "id": "3",
+          "text": "它负责整理，我负责最后的判断。"
+        }
+      ],
+      "time_precision": "unknown"
+    },
+    {
+      "source_id": "revision",
+      "title": "合成分段改稿",
+      "text": "我先把会议纪要放进文件夹。\n\n接着让 AI 按项目分类。\n\n最终要发给同事的结论，我会先核对它附上的原文链接。\n\n整理交给工具，判断由我负责。\n\n我试了三份纪要，发现两处项目名分错了。",
+      "paragraphs": [
+        {
+          "id": "1",
+          "text": "我先把会议纪要放进文件夹。"
+        },
+        {
+          "id": "2",
+          "text": "接着让 AI 按项目分类。"
+        },
+        {
+          "id": "3",
+          "text": "最终要发给同事的结论，我会先核对它附上的原文链接。"
+        },
+        {
+          "id": "4",
+          "text": "整理交给工具，判断由我负责。"
+        },
+        {
+          "id": "5",
+          "text": "我试了三份纪要，发现两处项目名分错了。"
+        }
+      ],
+      "time_precision": "unknown"
+    },
+    {
+      "source_id": "merged",
+      "title": "合成调序合段稿",
+      "text": "整理交给工具，判断由我负责。\n\n我先把会议纪要放进文件夹，接着让 AI 按项目分类。\n\n最终要发给同事的结论，我会先核对它附上的原文链接。",
+      "paragraphs": [
+        {
+          "id": "1",
+          "text": "整理交给工具，判断由我负责。"
+        },
+        {
+          "id": "2",
+          "text": "我先把会议纪要放进文件夹，接着让 AI 按项目分类。"
+        },
+        {
+          "id": "3",
+          "text": "最终要发给同事的结论，我会先核对它附上的原文链接。"
+        }
+      ],
+      "time_precision": "unknown"
+    },
+    {
+      "source_id": "profile-a",
+      "title": "合成本人材料甲",
+      "text": "我给 12 份会议纪要先加了项目标签，AI 归类与我核对的结果一致。\n\n我的判断是先建立清楚的分类规则，再让工具执行。",
+      "paragraphs": [
+        {
+          "id": "1",
+          "text": "我给 12 份会议纪要先加了项目标签，AI 归类与我核对的结果一致。"
+        },
+        {
+          "id": "2",
+          "text": "我的判断是先建立清楚的分类规则，再让工具执行。"
+        }
+      ],
+      "time_precision": "unknown"
+    },
+    {
+      "source_id": "profile-b",
+      "title": "合成本人材料乙",
+      "text": "我直接把三份纪要交给 AI，发现两处项目名被分错。\n\n我的判断是先保留原文，让工具标出不确定的归类，再由人检查。",
+      "paragraphs": [
+        {
+          "id": "1",
+          "text": "我直接把三份纪要交给 AI，发现两处项目名被分错。"
+        },
+        {
+          "id": "2",
+          "text": "我的判断是先保留原文，让工具标出不确定的归类，再由人检查。"
+        }
+      ],
+      "time_precision": "unknown"
+    }
+  ],
+  "analysis": {
+    "evolution": [
+      {
+        "id": "split-setup",
+        "operation": "split",
+        "from": [
+          {
+            "source_id": "base",
+            "paragraph_id": "1",
+            "quote": "我先把本周的会议纪要放进文件夹，再让 AI 按项目归类。"
+          }
+        ],
+        "to": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "1",
+            "quote": "我先把会议纪要放进文件夹。"
+          },
+          {
+            "source_id": "revision",
+            "paragraph_id": "2",
+            "quote": "接着让 AI 按项目分类。"
+          }
+        ],
+        "logic": "仍然是先放材料再分类，动作顺序不变。",
+        "expression": "原先一句承载两个动作，改成两句。",
+        "fact_change": "无新增结果或数字。",
+        "recommendation": "录屏需要逐步展示时可拆成两句。"
+      },
+      {
+        "id": "paraphrase-proof",
+        "operation": "rewrite",
+        "from": [
+          {
+            "source_id": "base",
+            "paragraph_id": "2",
+            "quote": "所有结论都附原文链接，我逐条核对后发给同事。"
+          }
+        ],
+        "to": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "3",
+            "quote": "最终要发给同事的结论，我会先核对它附上的原文链接。"
+          }
+        ],
+        "logic": "发出结论前先核对来源，逻辑相同。",
+        "expression": "原句先说证据，新句先说交付场景。",
+        "fact_change": "无。",
+        "recommendation": "依据观众当前任务决定是否先点出交付场景。"
+      },
+      {
+        "id": "add-result",
+        "operation": "add",
+        "from": [],
+        "to": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "5",
+            "quote": "我试了三份纪要，发现两处项目名分错了。"
+          }
+        ],
+        "logic": "增加分类可靠性的反例。",
+        "expression": "新增具体试用结果。",
+        "fact_change": "增加三份与两处错误，必须有本人材料支持。",
+        "recommendation": "仅在对应本人材料乙时可采用，不能写入本人材料甲的稿。"
+      },
+      {
+        "id": "merge-setup",
+        "operation": "merge",
+        "from": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "1",
+            "quote": "我先把会议纪要放进文件夹。"
+          },
+          {
+            "source_id": "revision",
+            "paragraph_id": "2",
+            "quote": "接着让 AI 按项目分类。"
+          }
+        ],
+        "to": [
+          {
+            "source_id": "merged",
+            "paragraph_id": "2",
+            "quote": "我先把会议纪要放进文件夹，接着让 AI 按项目分类。"
+          }
+        ],
+        "logic": "两个连续操作重新放回一句。",
+        "expression": "合段缩短步骤说明。",
+        "fact_change": "无。",
+        "recommendation": "观众已熟悉导入材料时可合并。"
+      },
+      {
+        "id": "reorder-judgment",
+        "operation": "reorder",
+        "from": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "4",
+            "quote": "整理交给工具，判断由我负责。"
+          }
+        ],
+        "to": [
+          {
+            "source_id": "merged",
+            "paragraph_id": "1",
+            "quote": "整理交给工具，判断由我负责。"
+          }
+        ],
+        "logic": "同一判断从结尾移到开头。",
+        "expression": "原文不变，仅位置改变。",
+        "fact_change": "无。",
+        "recommendation": "想先给判断时采用；其效果需要实际对照。"
+      },
+      {
+        "id": "delete-extra-result",
+        "operation": "delete",
+        "from": [
+          {
+            "source_id": "revision",
+            "paragraph_id": "5",
+            "quote": "我试了三份纪要，发现两处项目名分错了。"
+          }
+        ],
+        "to": [],
+        "logic": "调序稿移除了失败案例。",
+        "expression": "删除整个结果句。",
+        "fact_change": "可见稿不再声称发生两处错误。",
+        "recommendation": "没有该经历证据时应删去。"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "profile-a",
+      "analysis": {
+        "draft_sections": [
+          {
+            "id": "1",
+            "text": "想让 AI 帮你整理会议纪要，先把分类规则说清楚。我先给 12 份纪要加了项目标签，再让它归类，最后逐条核对，结果一致。我的建议是把人的判断写成清楚的规则，再把重复整理交给工具。",
+            "references": [
+              {
+                "source_id": "base",
+                "paragraph_id": "1",
+                "quote": "我先把本周的会议纪要放进文件夹，再让 AI 按项目归类。"
+              },
+              {
+                "source_id": "base",
+                "paragraph_id": "2",
+                "quote": "所有结论都附原文链接，我逐条核对后发给同事。"
+              }
+            ],
+            "own_facts": [
+              {
+                "source_id": "profile-a",
+                "paragraph_id": "1",
+                "quote": "我给 12 份会议纪要先加了项目标签，AI 归类与我核对的结果一致。"
+              },
+              {
+                "source_id": "profile-a",
+                "paragraph_id": "2",
+                "quote": "我的判断是先建立清楚的分类规则，再让工具执行。"
+              }
+            ],
+            "borrowed_logic": "借用材料导入、分类、来源核对的步骤。",
+            "expression_change": "以先建立规则的本人判断开头，用 12 份已标注材料说明条件。",
+            "material_gap": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "profile-b",
+      "analysis": {
+        "draft_sections": [
+          {
+            "id": "1",
+            "text": "AI 分好了类，先别急着发。我把三份会议纪要直接交给它，发现两处项目名分错了。现在我更在意它能不能保留原文、标出拿不准的地方，让我顺着来源检查。整理可以交给工具，最后的判断还得自己来。",
+            "references": [
+              {
+                "source_id": "base",
+                "paragraph_id": "2",
+                "quote": "所有结论都附原文链接，我逐条核对后发给同事。"
+              },
+              {
+                "source_id": "base",
+                "paragraph_id": "3",
+                "quote": "它负责整理，我负责最后的判断。"
+              }
+            ],
+            "own_facts": [
+              {
+                "source_id": "profile-b",
+                "paragraph_id": "1",
+                "quote": "我直接把三份纪要交给 AI，发现两处项目名被分错。"
+              },
+              {
+                "source_id": "profile-b",
+                "paragraph_id": "2",
+                "quote": "我的判断是先保留原文，让工具标出不确定的归类，再由人检查。"
+              }
+            ],
+            "borrowed_logic": "借用逐条核对来源、把判断留给人的结构。",
+            "expression_change": "从发生归类错误的真实任务切入，不再主张材料甲的预先标签方案。",
+            "material_gap": null
+          }
+        ]
+      }
+    }
+  ]
+}

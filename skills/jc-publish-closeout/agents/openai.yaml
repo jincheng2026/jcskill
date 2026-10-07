@@ -1,0 +1,4 @@
+interface:
+  display_name: "JC 发布后建档"
+  short_description: "视频发出去以后建档案、认出各平台作品，在 12 小时和 7 天抓数据，照实写明晚了多久"
+  default_prompt: "使用 $jc-publish-closeout，我刚把这条视频发出去了，帮我建档并安排 12 小时和 7 天抓数据。"

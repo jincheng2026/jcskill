@@ -1,0 +1,4 @@
+interface:
+  display_name: "JC 视频发布配文生成器"
+  short_description: "把逐字稿写成像本人发出的短视频配文，支持参考风格校准"
+  default_prompt: "使用 $jc-jianjie，根据这份逐字稿和参考样本生成一版可直接发布的视频配文。"

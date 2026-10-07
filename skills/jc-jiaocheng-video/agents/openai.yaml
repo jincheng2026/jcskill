@@ -1,0 +1,4 @@
+interface:
+  display_name: "教程视频共创"
+  short_description: "承接参考拆解，确认教程或口播叙事，迭代逐字稿和拍摄画面"
+  default_prompt: "使用 $jc-jiaocheng-video 承接参考视频拆解结果，和我确认叙事，再分段写出这条教程（或口播）的逐字稿。"

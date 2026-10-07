@@ -1,0 +1,4 @@
+interface:
+  display_name: "社媒调研"
+  short_description: "真实社媒证据、账号基线、对标演化、评论需求与写稿"
+  default_prompt: "使用 $jc-media-research，先读取我的已有定位与材料，按这次需求完成研究、作品对照或写稿，交付可核对来源的 HTML 与预览；费用在同一任务累计 120 次且 1 美元内直接执行。"

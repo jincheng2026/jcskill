@@ -1,0 +1,28 @@
+{
+  "name": "jc-koubo-shuping",
+  "version": "0.8.0-candidate",
+  "owner": "jincheng2026",
+  "updated_at": "2026-07-27",
+  "maturity": "production-candidate",
+  "maturity_tier": "candidate",
+  "lifecycle_stage": "candidate",
+  "status": "candidate",
+  "review_cadence": "manual before distribution",
+  "target_platforms": ["openai", "claude", "generic"],
+  "context_budget_tier": "production",
+  "runtime": {
+    "node": ">=20",
+    "npm": ">=10",
+    "ffmpeg": ">=7",
+    "ffprobe": ">=7",
+    "os": "macOS v0 target"
+  },
+  "factory_components": [
+    "scripts",
+    "references",
+    "assets/remotion-template",
+    "assets/baselines",
+    "evals"
+  ],
+  "release_claim": "v0.8.0 candidate adds an explicit two-style system: published Assembly monochrome and approved Google semantic color, with mandatory pre-case style resolution, style-bound baselines, executable Remotion routes, and unchanged semantic, caption, preserve-source, QA, and human acceptance gates"
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "口播剪辑"
+  short_description: "双风格竖屏口播检样、成片与局部返修"
+  default_prompt: "Use $jc-koubo-shuping to preview, produce, or repair this vertical talking-head video from its MP4 and SRT; resolve Assembly monochrome or Google semantic color before creating the case."
+policy:
+  allow_implicit_invocation: true

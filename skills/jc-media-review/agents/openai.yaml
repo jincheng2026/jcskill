@@ -1,0 +1,4 @@
+interface:
+  display_name: "JC 复盘"
+  short_description: "发布满 7 天后读档案里的数据和评论原话写复盘：原因必须附对照、比比例，先给你看，你说行了再写进档案"
+  default_prompt: "使用 $jc-media-review，这条视频满 7 天了，帮我复盘。"

@@ -1,0 +1,168 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>报告页模板 · ECharts 内联版</title>
+<!--
+  报告页模板。
+
+  使用方式：
+  1. 复制本文件为起点，禁止从零手写页面样式，禁止徒手计算 SVG/HTML 坐标画数据图。
+  2. 数据图表一律用 ECharts 声明式配置；构建时把下方 INLINE 标记整体替换为
+     assets/vendor/echarts.min.js 的完整内容（保持自包含离线，无任何网络请求）。
+  3. 本文件中的数据全部是合成示例，生成真实报告时由生成脚本注入 normalized 数据。
+  4. 生成后必须跑 scripts/qa_page.py <报告.html>：机械检查（截断/空白尾/横向溢出）
+     PASS 后，逐张查看分区截图确认无文字重叠、图形完整，才允许交付。
+
+  已验证的关键模式（踩坑换来的，别改回去）：
+  - 点阵图行标签走 graphic 通道 + grid.left 固定左栏（本例 252px），圆点永远进不了文字区；
+    不要用「隐藏散点当标签」的写法，低值点会压字。
+  - animation:false，保证截图自查稳定。
+  - 颜色只从 CSS tokens 读取（tok()），单一数据色 --c0 + 语义强调色 --c1（强互动/行最高），
+    该配对已过色盲/对比度六项校验（明暗两模式）；不要每行/每系列换色。
+  - 明暗主题：监听 prefers-color-scheme 变化后 dispose 重建图表。
+  - 点击跳转：series data item 带 url，chart.on('click') 打开。
+-->
+<style>
+  :root { color-scheme: light;
+    --surface:#fcfcfb; --page:#f9f9f7; --ink:#0b0b0b; --ink2:#52514e;
+    --muted:#898781; --grid:#e7e6df; --border:rgba(11,11,11,.1);
+    --c0:#2a78d6; --c1:#eb6834; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark;
+    --surface:#1a1a19; --page:#0d0d0d; --ink:#fff; --ink2:#c3c2b7;
+    --muted:#898781; --grid:#282826; --border:rgba(255,255,255,.1);
+    --c0:#3987e5; --c1:#d95926; } }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --surface:#1a1a19; --page:#0d0d0d; --ink:#fff; --ink2:#c3c2b7;
+    --muted:#898781; --grid:#282826; --border:rgba(255,255,255,.1);
+    --c0:#3987e5; --c1:#d95926; }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--page); color:var(--ink);
+    font:14px/1.55 system-ui,-apple-system,"PingFang SC","Segoe UI",sans-serif }
+  .wrap { max-width:1180px; margin:0 auto; padding:26px 24px 64px }
+  h1 { font-size:25px; margin:6px 0 4px }
+  .sub { color:var(--ink2); font-size:13px; margin-bottom:18px }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:0 0 18px }
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 18px 12px }
+  .stat b { display:block; font-size:32px; font-weight:800; line-height:1.15 }
+  .stat span { font-size:12.5px; color:var(--muted) }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px 18px 12px; margin-bottom:20px }
+  .kicker { font-size:11.5px; font-weight:800; letter-spacing:1.5px; color:var(--c0); margin:0 0 2px 4px }
+  .panelhead { font-weight:800; font-size:17px; margin:0 0 3px 4px }
+  .panelsub { color:var(--muted); font-size:12.5px; margin:0 0 8px 4px; max-width:900px }
+  .chart { width:100% }
+  .foot { color:var(--muted); font-size:12px; margin-top:6px }
+</style></head><body><div class="wrap">
+<h1>示例报告标题</h1>
+<div class="sub">一句话说清口径与数据时间 · 交互提示（悬停看详情，点击跳来源）</div>
+
+<div class="stats">
+  <div class="stat"><b>120</b><span>示例指标一</span></div>
+  <div class="stat"><b>86</b><span>示例指标二</span></div>
+  <div class="stat"><b>34</b><span>示例指标三</span></div>
+</div>
+
+<div class="panel">
+  <div class="kicker">01 · 示例条形排行</div>
+  <div class="panelhead">横向条形图（排行/排除原因通用）</div>
+  <div class="panelsub">橙色 = 需要强调的语义状态；悬停看明细。</div>
+  <div id="c1" class="chart" style="height:220px"></div>
+</div>
+
+<div class="panel">
+  <div class="kicker">02 · 示例点阵图</div>
+  <div class="panelhead">一行一实体、一点一样本（博主/账号研究通用）</div>
+  <div class="panelsub">对数轴；实心 = 常规样本，橙 ★ = 行内最高，短竖条 = 中位数。</div>
+  <div id="c2" class="chart" style="height:240px"></div>
+</div>
+
+<div class="foot">数据可复算：normalized/*.csv ｜ 生成脚本名写在这里</div>
+</div>
+<script>/*INLINE:assets/vendor/echarts.min.js —— 构建时把本标记整体替换为该文件全文*/</script>
+<script>
+const DATA = {
+  bars: { cats: ["示例条目C", "示例条目B", "示例条目A"],
+          vals: [ { value: 3200, hot: false, url: "" },
+                  { value: 5400, hot: false, url: "" },
+                  { value: 9100, hot: true,  url: "" } ] },
+  rows: [ { name: "示例账号甲", sub: "5条·总赞1.2万·中位800",
+            dots: [ { v: 320 }, { v: 800 }, { v: 1500 }, { v: 4200 }, { v: 9800, star: true } ] },
+          { name: "示例账号乙", sub: "4条·总赞3千·中位600",
+            dots: [ { v: 90 }, { v: 450 }, { v: 780 }, { v: 1700, star: true } ] } ]
+};
+function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function fmtW(n){ return n>=10000 ? (n/10000).toFixed(1).replace(/\.0$/,'')+'万' : n.toLocaleString(); }
+let charts = [];
+function render(){
+  charts.forEach(c=>c.dispose()); charts=[];
+  const BLUE=tok('--c0'), HOT=tok('--c1'), GRID=tok('--grid'), INK=tok('--ink'),
+        MUTED=tok('--muted'), SURF=tok('--surface');
+  const baseText = { color: tok('--ink2'), fontSize: 11.5 };
+  const tip = { backgroundColor:INK, borderWidth:0, textStyle:{ color:SURF, fontSize:12.5 },
+    confine:true, extraCssText:'box-shadow:0 4px 16px rgba(0,0,0,.25);border-radius:8px' };
+
+  // ---- 横向条形 ----
+  const c1 = echarts.init(document.getElementById('c1'));
+  c1.setOption({ animation:false, tooltip:tip,
+    grid:{ left:8, right:70, top:6, bottom:24, containLabel:true },
+    xAxis:{ type:'value', axisLabel:{ ...baseText, formatter:fmtW }, splitLine:{ lineStyle:{ color:GRID } } },
+    yAxis:{ type:'category', data:DATA.bars.cats,
+      axisLabel:{ color:INK, fontSize:12.5, width:330, overflow:'truncate' },
+      axisLine:{ show:false }, axisTick:{ show:false } },
+    series:[{ type:'bar', barWidth:14,
+      data: DATA.bars.vals.map(v=>({ ...v, itemStyle:{ color: v.hot?HOT:BLUE, borderRadius:[0,4,4,0] } })),
+      label:{ show:true, position:'right', color:INK, fontWeight:700, formatter:p=>fmtW(p.value) } }] });
+  c1.on('click', p=>{ if(p.data && p.data.url) window.open(p.data.url,'_blank'); });
+  charts.push(c1);
+
+  // ---- 点阵图：标签走 graphic 通道，grid.left 固定左栏 ----
+  const rows = DATA.rows, n = rows.length, LEFT = 252;
+  const solid=[], star=[], med=[];
+  rows.forEach((r, yi)=>{
+    const vals = r.dots.map(d=>d.v).sort((a,b)=>b-a);
+    const m = vals.length%2 ? vals[(vals.length-1)/2] : (vals[vals.length/2-1]+vals[vals.length/2])/2;
+    med.push({ value:[Math.max(10,m), yi] });
+    r.dots.slice().sort((a,b)=>b.v-a.v).forEach((d,j)=>{
+      const item = { value:[Math.max(10,d.v), yi+(j%3-1)*0.16], digg:d.v, row:r.name, url:d.url||'' };
+      (d.star?star:solid).push(item);
+    });
+  });
+  const c2 = echarts.init(document.getElementById('c2'));
+  c2.setOption({ animation:false,
+    tooltip:{ ...tip, formatter:p=> p.data.row ? `${p.data.row} · 赞 ${fmtW(p.data.digg)}` : '' },
+    grid:{ left:LEFT, right:28, top:34, bottom:10 },
+    xAxis:{ type:'log', min:10, max:20000, position:'top',
+      axisLabel:{ ...baseText, formatter:fmtW }, splitLine:{ lineStyle:{ color:GRID } },
+      axisLine:{ show:false }, axisTick:{ show:false } },
+    yAxis:{ type:'value', min:-0.5, max:n-0.5, inverse:true, show:false },
+    series:[
+      { type:'scatter', data:solid, symbolSize:13, cursor:'pointer',
+        itemStyle:{ color:BLUE, borderColor:SURF, borderWidth:2 }, emphasis:{ scale:1.4 } },
+      { type:'scatter', data:star, symbolSize:19, cursor:'pointer',
+        itemStyle:{ color:HOT, borderColor:SURF, borderWidth:2 },
+        label:{ show:true, formatter:'★', color:'#fff', fontSize:10 } },
+      { type:'scatter', symbol:'rect', symbolSize:[3,22], silent:true, data:med,
+        itemStyle:{ color:BLUE, opacity:0.5 } } ] });
+  (function placeLabels(){
+    const g=[];
+    for (let i=0;i<n;i++){
+      const y = c2.convertToPixel({yAxisIndex:0}, i);
+      g.push({ type:'text', left:8, top:y-17, style:{ text:rows[i].name, fill:INK,
+        font:'700 13px system-ui,-apple-system,"PingFang SC",sans-serif', width:LEFT-20, overflow:'truncate' } });
+      g.push({ type:'text', left:8, top:y+2, style:{ text:rows[i].sub, fill:MUTED,
+        font:'11px system-ui,-apple-system,"PingFang SC",sans-serif', width:LEFT-20, overflow:'truncate' } });
+      if (i>0){
+        const ys = c2.convertToPixel({yAxisIndex:0}, i-0.5);
+        g.push({ type:'line', shape:{ x1:8, y1:ys, x2:c2.getWidth()-16, y2:ys },
+          style:{ stroke:GRID, lineWidth:1 } });
+      }
+    }
+    c2.setOption({ graphic:{ elements:g } });
+    c2.__place = placeLabels;
+  })();
+  c2.on('click', p=>{ if(p.data && p.data.url) window.open(p.data.url,'_blank'); });
+  charts.push(c2);
+}
+render();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+window.addEventListener('resize', ()=>charts.forEach(c=>{ c.resize(); if(c.__place) c.__place(); }));
+</script></body></html>

@@ -1,0 +1,407 @@
+{
+  "schemaVersion": "jc-koubo-shuping.error-bank.v1",
+  "version": "2026-07-26",
+  "cases": [
+    {
+      "id": "KBE-001",
+      "category": "subtitle",
+      "symptom": "SRT 中同音错字或专有名词错误直接进入成片，例如应为「明星八卦」的词未修正。",
+      "rootCause": "把收到的 SRT 当成可直接渲染的真稿，没有逐条校对和差异记录。",
+      "prevention": "保留原 SRT，只在修订副本中更正明确错误，并生成结构化 diff 后才能进入 motion map。",
+      "detection": "workflow.subtitleReview.revisedSrt 和 diff 文件存在，字幕文本抽查与用户指定修正一致。",
+      "evidence": ["0715-02 用户字幕纠错反馈"],
+      "regression": {"type": "manifest_file_gate", "assertion": "subtitle review artifacts exist before motion_map_ready"},
+      "testId": "KBE-001",
+      "status": "active"
+    },
+    {
+      "id": "KBE-002",
+      "category": "layout",
+      "symptom": "语义卡放在人物嘴、下巴或胸口区域，遮挡表情和主体。",
+      "rootCause": "没有读取人物上方留白，也没有在静态预览阶段检查 face safe zone。",
+      "prevention": "优先使用 upper semantic card；静态预览必须覆盖 hero 与人物同屏风险。",
+      "detection": "static preview contact 中卡片位于头顶留白，face safe zone 无交叠。",
+      "evidence": ["0715-02 首轮静态预览被用户纠正为卡片放上面"],
+      "regression": {"type": "visual_gate", "assertion": "upper card and face safe zone do not overlap"},
+      "testId": "KBE-002",
+      "status": "active"
+    },
+    {
+      "id": "KBE-003",
+      "category": "style",
+      "symptom": "新片卡片壳、字幕底板和进度条与之前已批准风格不一致。",
+      "rootCause": "执行者重新发明 HTML 或 Remotion 模板，没有锁定 approved baseline。",
+      "prevention": "静态预览前声明 baseline 来源；样片通过后全片不得换视觉语法。",
+      "detection": "manifest 记录 baseline ID，静态、样片、全片使用同一 presentation variant。",
+      "evidence": ["0715-02 V1 静态稿风格漂移，后回退 0708 baseline"],
+      "regression": {"type": "manifest_assertion", "assertion": "baseline id is stable across static pilot and full stages"},
+      "testId": "KBE-003",
+      "status": "active"
+    },
+    {
+      "id": "KBE-004",
+      "category": "workflow",
+      "symptom": "未经过静态预览和动态样片就直接铺全片，返工成本失控。",
+      "rootCause": "把渲染速度当成进度，没有阶段闸门。",
+      "prevention": "静态图未获人类通过不做样片；样片未获人类通过不铺全片。",
+      "detection": "validate-workflow 在 full_rendered 前验证两份 human acceptance。",
+      "evidence": ["AI剪辑工作区静态预览与动态样片硬门"],
+      "regression": {"type": "workflow_fixture", "assertion": "full_rendered fails without accepted static preview and pilot"},
+      "testId": "KBE-004",
+      "status": "active"
+    },
+    {
+      "id": "KBE-005",
+      "category": "workflow",
+      "symptom": "节点按总时长平均切分，或 MG 标题、说明和 chips 机械重复、截断 AI 等词，导致视觉与语义重音错位且文案质量低。",
+      "rootCause": "把 create-case 的均分草稿误当最终规划，省略逐段语义分析，并允许 motion map 与实际渲染 nodes 分别维护。",
+      "prevention": "自动均分结果只写入不可渲染的 draftNodes；schema v3 先写 argument map，再用 cue_ids 做有序完整分区；编译器生成时间和逐字证据；只允许 compiled motion map 生成 nodes。",
+      "detection": "canonical 入口拒绝 schema 降级；硬门校验 cue 分区、argument 引用、无效文本、所有位置的 ASCII 截断、依赖闭包哈希和 nodes 漂移；近似均分、Unicode 重复、相似/通用文案作为必须解释的风险警告。",
+      "evidence": ["0715-02 全片使用人工 30 段语义卡而非均分节点", "0715-02-fastpath-v1-local 出现 5 个约 39 秒均分节点、MG 重复与 AI 截断"],
+      "regression": {"type": "semantic_compiler_gate", "assertion": "schema downgrade, placeholder semantics, punctuation-only copy, Unicode repetition, uniform timing risk, mid-sentence AI truncation, and motion-map/node drift are blocked while legitimate Plan A copy passes"},
+      "testId": "KBE-005",
+      "status": "active"
+    },
+    {
+      "id": "KBE-006",
+      "category": "layout",
+      "symptom": "顶部进度条或卡片进入状态栏、灵动岛或发布端 UI 风险区。",
+      "rootCause": "使用过高的 progressTop 或 cardTop，且没有 publish-safe 联系表。",
+      "prevention": "720 设计稿 progressTop 90–110、cardTop 140–210；1080 成片按 1.5 倍映射。",
+      "detection": "publish-safe geometry 断言和 qa/publish-safe-top-contact.jpg 均通过。",
+      "evidence": ["delivery redline R006", "0627 publish-safe hotfix"],
+      "regression": {"type": "geometry_gate", "assertion": "top chrome remains within publish-safe bands"},
+      "testId": "KBE-006",
+      "status": "active"
+    },
+    {
+      "id": "KBE-007",
+      "category": "layout",
+      "symptom": "9–10 字标题出现省略号或裁切。",
+      "rootCause": "标题尺寸规则未覆盖较长中文，且全片前没有 scene-boundary 风险检查。",
+      "prevention": "静态预览覆盖最长标题；标题必须完整显示，不用 ellipsis 掩盖。",
+      "detection": "scene-boundary contact 和最长标题专项帧无省略号、裁切或越界。",
+      "evidence": ["0715-02 全片首轮标题截断后重渲"],
+      "regression": {"type": "visual_gate", "assertion": "longest titles render fully"},
+      "testId": "KBE-007",
+      "status": "active"
+    },
+    {
+      "id": "KBE-008",
+      "category": "subtitle",
+      "symptom": "两个重叠 SRT cue 同时显示，形成双字幕。",
+      "rootCause": "显示层完全照搬时间重叠，没有做视觉接力。",
+      "prevention": "保留字幕文字和原时间证据，但把前一条显示结束夹到后一条开始。",
+      "detection": "overlap-specific contact sheet 中任一时刻只有一条跟读字幕。",
+      "evidence": ["0715-02 c131/c132 重叠 0.167 秒"],
+      "regression": {"type": "timeline_gate", "assertion": "overlapping cues never render concurrently"},
+      "testId": "KBE-008",
+      "status": "active"
+    },
+    {
+      "id": "KBE-009",
+      "category": "quality",
+      "symptom": "分辨率没变，但人物皮肤、头发和环境细节明显变软。",
+      "rootCause": "源视频作为 Remotion 背景被全量重绘，或使用低码率代理作底层。",
+      "prevention": "Remotion 只渲透明 overlay；原片或有证据的高质量中间片作为 ffmpeg 合成底层。",
+      "detection": "manifest.sourcePreservation.sourceInRemotion=false，合成命令直接读取原片底层。",
+      "evidence": ["ADR 0002", "0627 Full v1/v2 画质损失"],
+      "regression": {"type": "render_contract", "assertion": "source video is absent from Remotion composition"},
+      "testId": "KBE-009",
+      "status": "active"
+    },
+    {
+      "id": "KBE-010",
+      "category": "quality",
+      "symptom": "720p 成片或拉伸后的 overlay 在手机端不清晰。",
+      "rootCause": "低分辨率 overlay 被整体拉伸，或把 720p 当发布母版。",
+      "prevention": "低于 1080 宽的源片用 spline36 放大，Remotion 原生渲染 1080 overlay，输出高质量 1080 母版。",
+      "detection": "qualityProfile、overlay 尺寸和最终输出均为目标原生尺寸。",
+      "evidence": ["0629 画质 Lab C 路线"],
+      "regression": {"type": "render_contract", "assertion": "sub-1080 source produces native 1080 overlay and final"},
+      "testId": "KBE-010",
+      "status": "active"
+    },
+    {
+      "id": "KBE-011",
+      "category": "quality",
+      "symptom": "高质量 HEVC 源片被低码率 H.264 成片替换后观感下降。",
+      "rootCause": "只看像素尺寸，不考虑编码效率和发布母版码率。",
+      "prevention": "默认 libx264 slow CRF 8；控体积只试 CRF 10–12，或显式使用已验证的 45 Mbps VideoToolbox 长片方案。",
+      "detection": "manifest 采用允许的质量 profile，禁止未知低码率编码参数。",
+      "evidence": ["0629 Full v2 9.72 Mbps 画质下降", "0715-02 45 Mbps 长片母版"],
+      "regression": {"type": "render_contract", "assertion": "encoder settings match an approved quality profile"},
+      "testId": "KBE-011",
+      "status": "active"
+    },
+    {
+      "id": "KBE-012",
+      "category": "audio",
+      "symptom": "使用 -shortest 后尾部少帧或音视频提前结束。",
+      "rootCause": "overlay、视频和音频流尾点不完全一致时让最短流决定输出。",
+      "prevention": "最终合成禁止 -shortest，以声明的视频帧数为准。",
+      "detection": "命令和 manifest 均无 -shortest，最终视频帧数与源或目标一致。",
+      "evidence": ["0627 preserve-source 少 2 帧事故"],
+      "regression": {"type": "command_gate", "assertion": "final command contains no -shortest"},
+      "testId": "KBE-012",
+      "status": "active"
+    },
+    {
+      "id": "KBE-013",
+      "category": "audio",
+      "symptom": "限制视频帧数时，最后一个 AAC packet 被提前截掉。",
+      "rootCause": "视频编码和音频 copy 在同一命令中结束，输出停止点受视频帧限制影响。",
+      "prevention": "先生成 video-only，再从原片无损 remux 完整音频。",
+      "detection": "存在 videoOnlyIntermediate 和 remuxCommand，源/成片音频 packet hash 一致。",
+      "evidence": ["0715-02 首次全片合成音频越界修复"],
+      "regression": {"type": "render_contract", "assertion": "two-stage video-only plus source-audio remux is used"},
+      "testId": "KBE-013",
+      "status": "active"
+    },
+    {
+      "id": "KBE-014",
+      "category": "style",
+      "symptom": "一帧同时出现语义卡、大标题、大数字和证明截图，信息互相抢读。",
+      "rootCause": "把高密度误解成同屏堆叠。",
+      "prevention": "每个 beat 只保留一个可阅读 hero，其余降级为 chip、标签或下一 beat。",
+      "detection": "motion map 的 hero_visual 每 beat 只有一个，静态预览无竞争主视觉。",
+      "evidence": ["AI剪辑工作区 one readable hero 规则"],
+      "regression": {"type": "planning_gate", "assertion": "each beat has at most one readable hero"},
+      "testId": "KBE-014",
+      "status": "active"
+    },
+    {
+      "id": "KBE-015",
+      "category": "style",
+      "symptom": "原片被加入厚重暗罩，真实暖色环境变成假暗房。",
+      "rootCause": "把参考片拍摄氛围误判为通用后期调色。",
+      "prevention": "默认不加全局 grade；overlay 只覆盖组件必要区域。",
+      "detection": "Remotion overlay 不含全屏高不透明度暗层，源片主体区域明度不被系统性压低。",
+      "evidence": ["0715-02 禁止假暗房路线"],
+      "regression": {"type": "visual_gate", "assertion": "no global dark-room overlay is present"},
+      "testId": "KBE-015",
+      "status": "active"
+    },
+    {
+      "id": "KBE-016",
+      "category": "release",
+      "symptom": "技术校验通过后直接宣称成片完成，或把既有已验收成片说成本轮新剪。",
+      "rootCause": "把 technical pass、human acceptance 与本轮渲染 provenance 混为一谈。",
+      "prevention": "发布模式必须读取外层记录的 qa/acceptance.json；声明「本轮新剪」前还必须核对当前 case 的 Remotion renderer、组件、overlay 和最终 artifact 绑定。复用旧成片时只能明确报告为复核交付。",
+      "detection": "--require-acceptance 在缺少外部记录时非零退出；有记录时核对 case、最终 artifact、实际 SHA、技术报告和用户消息元数据，同时验证最终片绑定当前 manifest 的 canonical Remotion provenance。",
+      "evidence": ["delivery redline R009", "0715-02 用户明确确认后才进入 final release", "0715-02-recut-v2 用户指出旧成片被误报为本轮新剪"],
+      "regression": {"type": "release_gate", "assertion": "release metadata and current Remotion provenance are bound to the exact final artifact"},
+      "testId": "KBE-016",
+      "status": "active"
+    },
+    {
+      "id": "KBE-017",
+      "category": "render",
+      "symptom": "静态预览合成因 QA 时间码中的冒号未转义而全部失败。",
+      "rootCause": "把动态标签直接拼进 ffmpeg drawtext filter，没有做 filtergraph 转义。",
+      "prevention": "canonical 静态预览链不在 filtergraph 内拼接动态时间码；时间与语义映射写入 motion map 和 layout contract。",
+      "detection": "Skill 渲染脚本中不得出现未受控的 drawtext filter；静态预览文件和联系表必须实际可解码。",
+      "evidence": ["0715-02-recut-v2 静态预览首次合成失败"],
+      "regression": {"type": "command_gate", "assertion": "canonical preview and render scripts contain no inline drawtext filter"},
+      "testId": "KBE-017",
+      "status": "active"
+    },
+    {
+      "id": "KBE-018",
+      "category": "subtitle",
+      "symptom": "静态检样出现两行或三行中文字幕，用户已明确要求所有主字幕只能一行。",
+      "rootCause": "v0.5 把旧的最多两行预检误冻结成默认基线，没有继承 0721-01 take2 v6 的单行拆句结论。",
+      "prevention": "长句必须先按语义拆成短 cue，在原 cue 帧范围内连续分配；组件和预检都只接受单行。",
+      "detection": "caption preflight 的 maxLines 固定为 1；任何中文或英文溢出都按 P1 阻断。",
+      "evidence": ["0721-01 take2 v5 因两行字幕被用户否决，v6 单行获通过", "0721-03 attempt 2 再次出现两行字幕并被用户纠正"],
+      "regression": {"type": "caption_layout_gate", "assertion": "short bilingual captions pass as one line and a long unsplit caption fails before render"},
+      "testId": "KBE-018",
+      "status": "active"
+    },
+    {
+      "id": "KBE-019",
+      "category": "workflow",
+      "symptom": "第一次检样前或内部 QA 后持续自我返工，用户很晚才看到画面。",
+      "rootCause": "没有渲染次数和自动修复预算，P2/P3 审美意见也触发重渲。",
+      "prevention": "Fast Preview 最多渲染 2 次、自动修复 1 次；预算耗尽立即 WAIT_USER。",
+      "detection": "manifest.workflow.execution 记录预算和次数，渲染脚本超限非零退出。",
+      "evidence": ["0721 take2 首次用户可见静态检样耗时约 39 分钟"],
+      "regression": {"type": "workflow_budget_gate", "assertion": "fast preview enforces render and auto-fix budgets"},
+      "testId": "KBE-019",
+      "status": "active"
+    },
+    {
+      "id": "KBE-020",
+      "category": "render",
+      "symptom": "每个 case 和每次静态检样都重新生成 Remotion bundle。",
+      "rootCause": "bundle 目录随输出删除且 enableCaching=false，没有跨 case 模板指纹缓存。",
+      "prevention": "以模板源码和 package lock 指纹作为 cache key；静态离散帧共用 bundle 和浏览器会话。",
+      "detection": "preview manifest 记录 templateHash、bundleDir 和 reused。",
+      "evidence": ["0.4.1 render-overlay 每轮删除 bundle 并关闭缓存"],
+      "regression": {"type": "render_cache_gate", "assertion": "preview renderer uses a template fingerprint cache and does not delete it per attempt"},
+      "testId": "KBE-020",
+      "status": "active"
+    },
+    {
+      "id": "KBE-021",
+      "category": "workflow",
+      "symptom": "只为确认少数词语就在第一次检样前启动多 Agent 和双模型 ASR。",
+      "rootCause": "正式交付的证据标准提前施加到探索性检样。",
+      "prevention": "Fast Preview 默认一个写入 Agent；ASR 只在明确语义疑点时按片段启用。",
+      "detection": "Fast Preview 合同明确禁止默认全片 ASR、双模型复核和首次检样前多 Agent QA。",
+      "evidence": ["0721 take2 在静态检样前执行多 Agent、语义 QA 和双 ASR"],
+      "regression": {"type": "process_contract", "assertion": "fast preview documentation defaults to one writer and conditional snippet ASR"},
+      "testId": "KBE-021",
+      "status": "active"
+    },
+    {
+      "id": "KBE-022",
+      "category": "subtitle",
+      "symptom": "中英混排中文字幕把 Vibe、Coding 或 GitHub 等英文 token 拆行。",
+      "rootCause": "旧两行算法允许在字符边界切分；根本修复应是语义拆 cue 后整条单行渲染。",
+      "prevention": "中文字幕和英文译文都禁止内部换行；超宽时回到 caption plan 拆 cue，不在组件内切字。",
+      "detection": "所有 caption preflight 项的中英文 lines 长度都等于 1，超宽直接 P1。",
+      "evidence": ["0721-03 fast preview attempt 1 在 Vibe 与 Coding 内部断行"],
+      "regression": {"type": "caption_ascii_token_gate", "assertion": "mixed Chinese and English captions render as one complete line without token splitting"},
+      "testId": "KBE-022",
+      "status": "active"
+    },
+    {
+      "id": "KBE-023",
+      "category": "style",
+      "symptom": "字幕仍是白色粗描边单层样式，没有英文翻译，也没有参考图中的上下两块黑色半透明底板。",
+      "rootCause": "Skill 只锁了几何位置，没有把用户确认的双语字幕材质、字重和独立底板写进 baseline 与组件。",
+      "prevention": "默认基线必须要求中文单行、英文单行、两块内容宽黑色半透明圆角底板、白色轻字重，并禁用粗描边和黄色高亮。",
+      "detection": "caption preflight 要求 100% 英文非空；Remotion 组件包含两块独立 plate，保留自然英文大小写且不使用 HighlightedText。",
+      "evidence": ["0721-03 用户提供两张双语黑底字幕参考图并指出当前质感与样式不对"],
+      "regression": {"type": "caption_bilingual_plate_style_gate", "assertion": "canonical template renders required one-line Chinese and English on separate translucent black plates without thick stroke or yellow highlights"},
+      "testId": "KBE-023",
+      "status": "active"
+    },
+    {
+      "id": "KBE-024",
+      "category": "style",
+      "symptom": "字幕结构正确但仍显得粗、圆、厚，和参考图中的轻字重访谈字幕质感不一致。",
+      "rootCause": "组件继承了 Noto Sans SC 优先级和中等字重，英文也没有锁定参考图接近的 Helvetica Neue Light。",
+      "prevention": "字幕必须使用显式的 PingFang SC 300 与 Helvetica Neue 300 字体栈；底板不得出现可见描边，阴影保持轻量。",
+      "detection": "回归检查字幕组件的中英文字体栈、300 字重、无底板描边和低强度阴影。",
+      "evidence": ["0721-03 cycle 2 用户明确反馈字幕质感不够好且字体不对"],
+      "regression": {"type": "caption_font_texture_gate", "assertion": "canonical caption template uses light PingFang and Helvetica Neue stacks with borderless translucent plates"},
+      "testId": "KBE-024",
+      "status": "active"
+    },
+    {
+      "id": "KBE-025",
+      "category": "layout",
+      "symptom": "语义段切换首帧字幕已经更新，但新卡片仍透明，进度标签也未激活，形成主视觉空档。",
+      "rootCause": "卡片 opacity 在段首淡入，且 node 用浮点秒比较、caption 用整数帧取整，造成 6.167 秒这类边界错开 1 帧；进度 active 又错误依赖 localPartial 大于 0.01。",
+      "prevention": "node、caption 与 progress 共用 cueFrom 的整数帧边界；新卡片从段首 +0f 即可见，进度标签同帧激活。",
+      "detection": "组件回归要求 node/progress 均用 cueFrom 取整、SemanticCard opacity 恒为 1、active label 不依赖 localPartial；样片检查每个段界 -1/+0/+1 帧。",
+      "evidence": ["0721-03 pilot v2 transition contact 在 b02、b03、b04、b05 段首出现字幕先到而卡片近透明"],
+      "regression": {"type": "transition_first_frame_visibility_gate", "assertion": "hero card and active progress label are visible on the exact first frame of every semantic beat"},
+      "testId": "KBE-025",
+      "status": "active"
+    },
+    {
+      "id": "KBE-026",
+      "category": "render",
+      "symptom": "同一 case 重渲 pilot 时 Remotion bundle 因 public 软链接已存在而报 EEXIST。",
+      "rootCause": "render-overlay 每次清空 overlay 输出，却没有同步重建 bundle 目录。",
+      "prevention": "bundle 目录通过受控路径校验后必须在每次正式 render 前重建，避免陈旧软链接与代码缓存。",
+      "detection": "回归检查 render-overlay 在 ensureDir 之前同时清理 outputDir 和 bundleDir。",
+      "evidence": ["0721-03 pilot v2 重渲触发 remotion_bundle_pilot/public EEXIST"],
+      "regression": {"type": "rerender_bundle_reset_gate", "assertion": "repeat pilot and full renders rebuild their managed Remotion bundle directories"},
+      "testId": "KBE-026",
+      "status": "active"
+    },
+    {
+      "id": "KBE-027",
+      "category": "layout",
+      "symptom": "提示词卡、左右关系卡、书签关系卡或数字结论卡的底部内容贴边、被裁切，页脚或结果条落到外卡之外。",
+      "rootCause": "外卡和内卡使用固定高度，却没有统一 border-box、内容区高度、底部 padding 和独立页脚预算。",
+      "prevention": "所有 MG 使用 mg-layout.json 的外框与内框预算；外卡、内卡和页脚全部显式 border-box，超长内容在渲染前失败。",
+      "detection": "回归验证每个 variant 的底边安全区、prompt 25px 底部留白、116px 关系内卡、bookmark 34px 页脚和 14px 间距，以及 numeric conclusion 至少 234px 外卡高度。",
+      "evidence": [
+        "0721-01 multi-MG attempt 01 prompt 和 dual 卡片文字贴底",
+        "0721-01 multi-MG attempt 02 bookmark 页脚被外卡裁切",
+        "attempt 03 bookmark-fix contact sheet",
+        "v0.7 multi-MG smoke 首轮发现 numeric conclusion 结果条被 190px 外卡裁切"
+      ],
+      "regression": {
+        "type": "mg_layout_budget_gate",
+        "assertion": "all MG variants use border-box and machine-readable outer, inner, footer, and bottom-padding budgets"
+      },
+      "testId": "KBE-027",
+      "status": "active"
+    },
+    {
+      "id": "KBE-028",
+      "category": "style",
+      "symptom": "整条口播只有同一种顶部卡片，信息关系不同但视觉表达没有变化，部分段落长时间没有 MG。",
+      "rootCause": "motion map 只有通用 title/sub/chips，没有把列表、对比、关系、流程和数字结论编译成可验证的语义组件。",
+      "prevention": "为每个需要 hero 的 beat 明确选择 9 种 variant 之一并提供对应结构化 payload；不需要视觉解释的句子保留纯口播。",
+      "detection": "语义编译器拒绝未知 variant、缺失 payload 和超出布局预算的字段；回归至少验证一个结构化 numbered_list 能通过、随机 variant 会失败。",
+      "evidence": [
+        "用户指出原 Skill 只有一种卡片变化",
+        "0721-01 multi-MG 全片测试验证了标题、列表、提示词、关系、流程和数字组件"
+      ],
+      "regression": {
+        "type": "semantic_mg_variant_gate",
+        "assertion": "MG variants are selected by semantic relationship and validated with variant-specific payload contracts"
+      },
+      "testId": "KBE-028",
+      "status": "active"
+    },
+    {
+      "id": "KBE-029",
+      "category": "style",
+      "symptom": "顶部进度条把每个内部语义 beat 都显示成一段和一个文字标签，长视频出现十几个甚至二十个小字，像调试界面而不是观众导航。",
+      "rootCause": "把剪辑内部的语义分段误当成观众可见章节，组件直接遍历 manifest.nodes 并渲染 node.label。",
+      "prevention": "默认可使用无文字的全片时间进度；确有宏观结构时单独声明 3–5 个 progressChapters，保留全部宏观标签同时可见和当前章高亮，但绝不直接展示 beat 标签。",
+      "detection": "模板不得渲染 node.label；workflow 拒绝 3 个以下或 5 个以上章节、时间不连续、未覆盖全片、重复或过长标签；顶部 QA 必须看到少量宏观标签同显，且当前章高亮。",
+      "evidence": [
+        "0726-01 用户指出 19 个进度标签过多且逻辑错误"
+      ],
+      "regression": {
+        "type": "macro_progress_timeline_gate",
+        "assertion": "progress chrome never exposes beat-level labels and renders only 3-5 contiguous macro labels together with the current chapter highlighted"
+      },
+      "testId": "KBE-029",
+      "status": "active"
+    },
+    {
+      "id": "KBE-030",
+      "category": "workflow",
+      "symptom": "用户没有指定视觉风格时，Skill 静默沿用旧默认；或用户已经明确指定后仍反复追问。",
+      "rootCause": "没有稳定的双风格 ID、别名解析和开工前选择门，历史 baseline 被误当成用户当前选择。",
+      "prevention": "只允许 assembly-mono 与 google-semantic；已指定直接执行，未指定只问一次，选择写入 manifest 并绑定唯一 baseline。",
+      "detection": "回归验证中英文别名、两种 baseline 映射、单一确认问题、缺失 style 拦截和 style/baseline 不匹配拦截。",
+      "evidence": [
+        "用户要求竖屏口播保留黑白版和 Google 配色版两种风格，并在未指定时询问"
+      ],
+      "regression": {
+        "type": "visual_style_router_gate",
+        "assertion": "style is explicitly resolved once and bound to the matching baseline before case creation or rendering"
+      },
+      "testId": "KBE-030",
+      "status": "active"
+    },
+    {
+      "id": "KBE-031",
+      "category": "style",
+      "symptom": "manifest 虽然记录黑白风格，但 Remotion 仍渲染 Google 玻璃卡；或黑白层重新混入蓝红黄绿强调色。",
+      "rootCause": "风格只写在说明文档，没有进入实际组件路由、字体、局部对比层和渲染回归。",
+      "prevention": "TalkingHeadOverlay 按 visualStyleId 选择 AssemblyMonoHero 或 MgHero；黑白组件只用白、银、灰和羽化局部压暗。",
+      "detection": "回归检查双 renderer 路由、黑白 token、局部径向对比层和 Google 色值泄漏。",
+      "evidence": [
+        "0726-01 AssemblyMono072601 完整成片通过并成为最终发布版本"
+      ],
+      "regression": {
+        "type": "dual_style_renderer_gate",
+        "assertion": "both approved styles have executable Remotion routes and assembly-mono stays monochrome"
+      },
+      "testId": "KBE-031",
+      "status": "active"
+    }
+  ]
+}

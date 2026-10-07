@@ -1,0 +1,4 @@
+interface:
+  display_name: "转文字"
+  short_description: "用火山引擎豆包语音批量把音视频转成校正版逐字稿，并完成验收"
+  default_prompt: "使用 $jc-zhuanxie 将本地音视频批量转成校正版逐字稿，并输出验收结果。"

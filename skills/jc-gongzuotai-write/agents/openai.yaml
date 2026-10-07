@@ -1,0 +1,4 @@
+interface:
+  display_name: "创作页"
+  short_description: "把第一版逐字稿做成能直接改、自动存回文件的网页，读回你的改动并提建议"
+  default_prompt: "使用 $jc-gongzuotai-write 把 T001 的第一版逐字稿做成创作页，把页面链接发给我。"

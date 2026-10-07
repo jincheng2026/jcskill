@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "jc-koubo-shuping.baseline-lock.v1",
+  "baselineId": "0708-0721-approved-baseline-v2",
+  "status": "human-approved-geometry-with-deterministic-caption-layout",
+  "approvedEvidence": [
+    "0715-02 static preview V2 and final release",
+    "0721-01 take2 static preview V3"
+  ],
+  "template": "../../remotion-template",
+  "layout720": {
+    "progressTop": 104,
+    "cardTop": 160,
+    "cardLeft": 30,
+    "cardWidth": 660,
+    "cardHeight": 166,
+    "captionLeft": 42,
+    "captionTop": 890,
+    "captionWidth": 636,
+    "captionHeight": 264
+  },
+  "captionPolicy": {
+    "maxLines": 2,
+    "minCharactersPerLine": 2,
+    "fontSizes720": [54, 48, 42, 38, 34],
+    "browserAutoWrap": false
+  }
+}

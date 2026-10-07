@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "profile_version": 1,
+  "creator": {
+    "display_name": "示例创作者",
+    "audience": ["希望把 AI 用进日常工作的人"],
+    "topics": ["AI 工具实际使用"],
+    "confirmed_positions": [
+      {
+        "statement": "AI 可以整理材料，但最终判断由人完成。",
+        "source": "用户确认的示例资料",
+        "status": "confirmed"
+      }
+    ],
+    "public_experiences": [
+      {
+        "summary": "示例创作者曾用 AI 整理一份公开资料。",
+        "evidence": "示例材料编号 example-001",
+        "allowed_for_publication": true
+      }
+    ],
+    "prohibited_claims": ["没有来源的效果比例", "未确认的收入或时间数字"]
+  }
+}

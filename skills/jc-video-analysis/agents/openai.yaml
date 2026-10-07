@@ -1,0 +1,4 @@
+interface:
+  display_name: "短视频专业拆解"
+  short_description: "拆清参考短视频为什么吸引人、怎样证明，以及哪些做法值得学"
+  default_prompt: "使用 $jc-video-analysis 完整拆解这条参考短视频，告诉我它为什么吸引人、怎样兑现，以及哪些做法值得学。"

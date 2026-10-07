@@ -1,0 +1,69 @@
+{
+  "synthetic": true,
+  "description": "合成的边界样本，不含真实用户、评论或平台响应。",
+  "comments": [
+    {
+      "platform": "douyin",
+      "content_id": "synthetic-eligible-1",
+      "comment_id": "comment-1",
+      "comment_text": "这个步骤怎么保存成模板？",
+      "commented_at": "2026-01-15T11:00:00+08:00",
+      "digg_count": 3,
+      "source_url": "https://www.douyin.com/video/1000000000000000001",
+      "source_file": "raw/synthetic-comments.json",
+      "collected_at": "2026-01-15T12:00:00+08:00",
+      "primary_category": "使用问题",
+      "secondary_categories": ["模板需求"],
+      "category_reason": "评论直接询问操作方法。",
+      "is_noise": false,
+      "noise_reason": ""
+    },
+    {
+      "platform": "douyin",
+      "content_id": "synthetic-eligible-1",
+      "comment_id": "comment-2",
+      "comment_text": "互关",
+      "commented_at": "2026-01-15T11:10:00+08:00",
+      "digg_count": 0,
+      "source_url": "https://www.douyin.com/video/1000000000000000001",
+      "source_file": "raw/synthetic-comments.json",
+      "collected_at": "2026-01-15T12:00:00+08:00",
+      "primary_category": "其他",
+      "secondary_categories": [],
+      "category_reason": "与视频内容无关。",
+      "is_noise": true,
+      "noise_reason": "引流式无关评论。"
+    },
+    {
+      "platform": "douyin",
+      "content_id": "synthetic-eligible-1",
+      "comment_id": "comment-3",
+      "comment_text": "整理后真的能少花很多时间。",
+      "commented_at": "2026-01-15T11:20:00+08:00",
+      "digg_count": 2,
+      "source_url": "https://www.douyin.com/video/1000000000000000001",
+      "source_file": "raw/synthetic-comments.json",
+      "collected_at": "2026-01-15T12:00:00+08:00",
+      "primary_category": "结果反馈",
+      "secondary_categories": [],
+      "category_reason": "评论描述实际使用结果。",
+      "is_noise": false,
+      "noise_reason": ""
+    }
+  ],
+  "invalid_records": [
+    {
+      "case": "missing_follower_count",
+      "content_id": "synthetic-missing-followers",
+      "digg_count": 5000,
+      "relevance": "direct"
+    },
+    {
+      "case": "missing_source_url",
+      "content_id": "synthetic-missing-source",
+      "follower_count": 1000,
+      "digg_count": 5000,
+      "relevance": "direct"
+    }
+  ]
+}
