@@ -28,9 +28,8 @@ Agent 负责相关性、语义判断、问题聚类和写作；程序负责计�
     python3 scripts/validate_and_package.py validate
     python3 scripts/tikhub_guard.py self-test
     python3 scripts/tikhub_guard.py credential-status
-    python3 scripts/transcribe_segments.py --check
 
-分别说明离线能力、凭据是否配置、本地转写条件。凭据已配置不证明端点权限可用；本地依赖齐全不证明媒体完整。不得让用户把 Key 发到聊天框或打印凭据。凭据设置和平台调用见 [报告与安全](references/reporting-and-security.md)。
+分别说明离线能力和凭据是否配置；需要转文字时，确认同仓库的 jc-zhuanxie 装好（和本 Skill 装在同一个地方），它自己会检查火山引擎的 key 和 ffmpeg。凭据已配置不证明端点权限可用；本地依赖齐全不证明媒体完整。不得让用户把 Key 发到聊天框或打印凭据。凭据设置和平台调用见 [报告与安全](references/reporting-and-security.md)。
 
 ## 工作目录与采集
 
@@ -67,9 +66,9 @@ Agent 负责相关性、语义判断、问题聚类和写作；程序负责计�
 
 ## 先读真实内容，再作判断
 
-优先可靠字幕或已复核逐字稿。缺少可靠字幕时，装了同仓库的 `jc-zhuanxie` 就用它转写（火山引擎豆包语音，失败时自动改用本机 Qwen3-ASR），输出放进任务的 transcript 目录；没装 `jc-zhuanxie` 时才用本 Skill 自带的本地 SenseVoice Small 脚本，不自动换别的云端模型：
+优先可靠字幕或已复核逐字稿。缺少可靠字幕时，统一用同仓库的 `jc-zhuanxie` 转写（火山引擎豆包语音，失败时自动改用本机 Qwen3-ASR），本 Skill 不自带转写模型，也不换别的模型。jc-zhuanxie 验收通过后，把它的输出接进任务的 transcript 目录，再做就绪检查：
 
-    python3 scripts/transcribe_segments.py --input MEDIA --output-dir TASK/transcript
+    python3 scripts/import_zhuanxie.py --source ZHUANXIE_OUTPUT --output TASK/transcript --media MEDIA
     python3 scripts/validate_transcript_ready.py --transcript-dir TASK/transcript --require text
 
 文字结构分析要求 capabilities.text_structure。涉及前 5 秒、精确转折点或视频时间轴时改用 --require timing，要求已复核的句子或词级对齐；约 28 秒转写块不代表精确句子时间。短稿可用，局部疑问只限制相应判断。媒体校验可附 --media MEDIA。

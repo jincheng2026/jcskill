@@ -6,7 +6,7 @@
 
 1. 平台或作者提供的可靠字幕。
 2. 用户提供的原始逐字稿。
-3. 本地 SenseVoice Small 生成并完成复核的逐字稿。
+3. 同仓库 jc-zhuanxie 转写并通过验收的校正版逐字稿（用 `scripts/import_zhuanxie.py` 接进任务）。
 4. 标题、简介和互动数据只能支持题材与表现判断，不能支持逐秒结构。
 
 记录字幕来源、采集时间、完整度和是否校正。没有时间轴时，不写「前 5 秒」「第 30 秒转折」等结论。
@@ -19,7 +19,7 @@
 
 只有 manifest 状态为 `corrected_validated` 时，才把校正版当作最终证据。原始识别和分段复核始终保留。
 
-文字结构、钩子和转折分析前运行 `scripts/validate_transcript_ready.py --require text`；精确时间结论运行 `--require timing`。程序分别返回文字、块级时间和精确时间能力。约 28 秒块只支持粗略区间；局部疑问仅限制相关引用。没有复核的原始识别仍不能冒充校正版。
+文字结构、钩子和转折分析前运行 `scripts/validate_transcript_ready.py --require text`；精确时间结论运行 `--require timing`。程序分别返回文字、块级时间和精确时间能力。jc-zhuanxie 给的是识别时的小句时间，没有人工复核对齐前只支持粗略区间；局部疑问仅限制相关引用。没有复核的原始识别仍不能冒充校正版。
 
 ## 拆视频
 

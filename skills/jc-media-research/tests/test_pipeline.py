@@ -29,7 +29,7 @@ def load_module(name: str, relative_path: str):
 
 prepare = load_module("prepare_research", "scripts/prepare_research.py")
 charts = load_module("render_charts", "scripts/render_charts.py")
-transcribe = load_module("transcribe_segments", "scripts/transcribe_segments.py")
+importer = load_module("import_zhuanxie", "scripts/import_zhuanxie.py")
 transcript_ready = load_module(
     "validate_transcript_ready", "scripts/validate_transcript_ready.py"
 )
@@ -209,98 +209,70 @@ class ChartAndTranscriptTests(unittest.TestCase):
             self.assertEqual(manifest["chart_type"], "scatter")
             self.assertEqual(manifest["status"], "ok")
 
-    def test_transcript_layers_do_not_store_absolute_source_path(self) -> None:
+    def _zhuanxie_output(self, root: Path, ok: bool = True) -> Path:
+        """造一份合成的 jc-zhuanxie 输出目录（不调用任何转写接口）。"""
+        source = root / "zhuanxie"
+        (source / "校正版逐字稿").mkdir(parents=True)
+        (source / "原始识别").mkdir()
+        item = "001-合成视频"
+        (source / "校正版逐字稿" / f"{item}.md").write_text(
+            "这是一段已经完成复核的合成校正版逐字稿。" * 8, encoding="utf-8"
+        )
+        (source / "原始识别" / f"{item}.json").write_text(
+            json.dumps(
+                [
+                    {"i": 0, "start": 0.0, "end": 12.0, "text": "这是只用于离线测试的合成转写文本，"},
+                    {"i": 1, "start": 11.98, "end": 28.0, "text": "第二句也是合成的。"},
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        (source / "manifest.json").write_text(
+            json.dumps({"items": [{"id": item, "status": "transcribed", "engine": "synthetic"}]}),
+            encoding="utf-8",
+        )
+        (source / "validation.json").write_text(json.dumps({"ok": ok}), encoding="utf-8")
+        return source
+
+    def test_transcript_import_does_not_store_absolute_source_path(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
-            media = root / "synthetic.wav"
-            media.write_bytes(b"synthetic-media")
+            source = self._zhuanxie_output(root)
             output = root / "transcript"
-            records = [
-                {
-                    "segment": 1,
-                    "start_seconds": 0.0,
-                    "end_seconds": 28.0,
-                    "text": "合成转写文本",
-                }
-            ]
-            manifest = transcribe.write_outputs(
-                output_dir=output,
-                media=media,
-                records=records,
-                duration=28.0,
-                segment_seconds=28,
-            )
-            self.assertEqual(manifest["status"], "transcribed_pending_review")
+            manifest = importer.import_transcript(source, output)
+            self.assertEqual(manifest["status"], "corrected_validated")
+            self.assertEqual(manifest["segment_count"], 2)
             serialized = (output / "manifest.json").read_text(encoding="utf-8")
             self.assertNotIn(str(root), serialized)
             self.assertTrue((output / "raw" / "segments.jsonl").is_file())
-            self.assertTrue((output / "review" / "transcript_review.md").is_file())
             self.assertTrue((output / "corrected" / "transcript_corrected.md").is_file())
             with self.assertRaises(FileExistsError):
-                transcribe.write_outputs(
-                    output_dir=output,
-                    media=media,
-                    records=records,
-                    duration=28.0,
-                    segment_seconds=28,
-                )
+                importer.import_transcript(source, output)
 
-    def test_pending_review_transcript_is_blocked_from_structure_analysis(self) -> None:
+    def test_unvalidated_zhuanxie_output_is_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
-            media = root / "synthetic.wav"
-            media.write_bytes(b"synthetic-media")
+            source = self._zhuanxie_output(root, ok=False)
             output = root / "transcript"
-            transcribe.write_outputs(
-                output_dir=output,
-                media=media,
-                records=[
-                    {
-                        "segment": 1,
-                        "start_seconds": 0.0,
-                        "end_seconds": 28.0,
-                        "text": "这是只用于离线测试的合成转写文本。",
-                    }
-                ],
-                duration=28.0,
-                segment_seconds=28,
-            )
-            with self.assertRaisesRegex(
-                transcript_ready.TranscriptNotReady, "校正复核"
-            ):
+            with self.assertRaises(importer.TranscriptImportError):
+                importer.import_transcript(source, output)
+            self.assertFalse((output / "manifest.json").exists())
+            with self.assertRaisesRegex(transcript_ready.TranscriptNotReady, "manifest"):
                 transcript_ready.validate_transcript(output)
 
-    def test_validated_transcript_passes_structure_gate(self) -> None:
+    def test_imported_transcript_passes_structure_gate(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
-            media = root / "synthetic.wav"
-            media.write_bytes(b"synthetic-media")
             output = root / "transcript"
-            transcribe.write_outputs(
-                output_dir=output,
-                media=media,
-                records=[
-                    {
-                        "segment": 1,
-                        "start_seconds": 0.0,
-                        "end_seconds": 28.0,
-                        "text": "这是只用于离线测试的合成转写文本。",
-                    }
-                ],
-                duration=28.0,
-                segment_seconds=28,
-            )
-            manifest_path = output / "manifest.json"
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            manifest["status"] = "corrected_validated"
-            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
-            corrected = "这是一段已经完成复核的合成校正版逐字稿。" * 8
-            (output / "corrected" / "transcript_corrected.md").write_text(
-                corrected, encoding="utf-8"
-            )
+            importer.import_transcript(self._zhuanxie_output(root), output)
             result = transcript_ready.validate_transcript(output)
             self.assertEqual(result["status"], "ready")
-            self.assertEqual(result["segment_count"], 1)
+            self.assertEqual(result["segment_count"], 2)
+            self.assertTrue(result["capabilities"]["text_structure"])
+            self.assertFalse(result["capabilities"]["precise_timing"])
+            with self.assertRaises(transcript_ready.TranscriptNotReady):
+                transcript_ready.validate_transcript(output, require="timing")
 
     def test_png_preview_validation_reads_real_dimensions(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

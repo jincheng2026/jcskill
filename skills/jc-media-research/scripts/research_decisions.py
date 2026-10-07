@@ -348,55 +348,10 @@ def render_workbench(state, template=None):
     serialized = json.dumps(state, ensure_ascii=False).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     return page.replace("__WORKBENCH_STATE__", serialized)
 
-def import_t016(path):
-    path = Path(path)
-    page = path.read_text(encoding="utf-8")
-    def embedded(name):
-        match = re.search(r'<script\s+id=["\']' + re.escape(name) + r'["\'][^>]*>([\s\S]*?)</script>', page)
-        if not match: raise DecisionError(f"缺少 {name}")
-        return json.loads(match.group(1))
-    data, comparison = embedded("t016-data"), embedded("t016-comparison")
-    sources = []
-    for i, origin in enumerate(data["sources"]):
-        paragraphs = [{"id": str(s["id"]), "text": s["refs"][i]} for s in data["sections"]]
-        meta = Path(origin).parents[2] / "笔记信息.md"
-        meta_text = meta.read_text(encoding="utf-8") if meta.is_file() else ""
-        author = re.search(r"\| (?:作者昵称|达人昵称) \| ([^\n]+?) \|", meta_text)
-        label = author.group(1).strip() if author else Path(origin).parents[2].name
-        sources.append({"source_id": f"source-{i + 1}", "title": label,
-            "text": "\n\n".join(p["text"] for p in paragraphs), "paragraphs": paragraphs,
-            "time_precision": "unknown", "original_file": origin,
-            "original_file_sha256": hashlib.sha256(Path(origin).read_bytes()).hexdigest() if Path(origin).is_file() else None,
-            "representation": "T016 对照页中的原文分段；原始校正版文件另存来源，不推算时间"})
-    state = {"schema_version": 2, "record_type": "writing_workbench", "task_id": data["content_id"] + "-independent",
-        "title": "T016 · 研究证据与写稿", "revision": data["revision"], "updated_at": data.get("updatedAt"),
-        "sources": sources, "sections": [], "history": [], "profile": {},
-        "import_provenance": {"file": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-            "source_revision": data["revision"], "comparison_review_history": comparison.get("reviewHistory", [])}}
-    for old in data["sections"]:
-        sid = str(old["id"])
-        section = {"id": sid, "title": old["title"], "mine": old["mine"], "note": old.get("note", ""),
-            "baseline": old.get("baseline"), "locked": False, "history": deepcopy(old.get("history", [])),
-            "reference_history": deepcopy(old.get("referenceHistory", [])),
-            "references": [{"source_id": f"source-{i + 1}", "paragraph_id": sid, "quote": text} for i, text in enumerate(old["refs"]) if text],
-            "reviewed_text": comparison.get("reviewedMine", {}).get(sid),
-            "analysis_status": "reviewed" if comparison.get("reviewedMine", {}).get(sid) == old["mine"] else "needs_review",
-            "semantic_groups": [], "borrowed_logic": "", "own_facts": [], "expression_change": ""}
-        for g in comparison.get("groups", []):
-            if str(g["section"]) != sid: continue
-            section["semantic_groups"].append({"id": g["id"], "color": g["color"], "label": g["label"],
-                "mine": g["mine"], "comment": g.get("comment", ""), "sources": [
-                    {"source_id": f"source-{r['author'] + 1}", "paragraph_id": str(r["section"]), "quote": r["text"]}
-                    for r in g["sources"]]})
-        refresh_section(section, sources)
-        state["sections"].append(section)
-    validate_workbench(state)
-    return state
-
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     subs = parser.add_subparsers(dest="command", required=True)
-    for name in ("baselines", "select", "validate-analysis", "questions", "import-t016", "render-writing"):
+    for name in ("baselines", "select", "validate-analysis", "questions", "render-writing"):
         p = subs.add_parser(name)
         p.add_argument("--input", required=True, type=Path)
         p.add_argument("--output", required=True, type=Path)
@@ -405,17 +360,15 @@ def main(argv=None):
         if name == "baselines": p.add_argument("--as-of")
     args = parser.parse_args(argv)
     try:
-        if args.command == "import-t016": output = import_t016(args.input)
+        value = read_json(args.input)
+        if args.command == "baselines": output = calculate_baselines(value, args.as_of)
+        elif args.command == "select": output = select_comparisons(value)
+        elif args.command == "validate-analysis": output = validate_analysis(value, read_json(args.sources))
+        elif args.command == "questions": output = aggregate_questions(value, read_json(args.analysis), read_json(args.sources))
         else:
-            value = read_json(args.input)
-            if args.command == "baselines": output = calculate_baselines(value, args.as_of)
-            elif args.command == "select": output = select_comparisons(value)
-            elif args.command == "validate-analysis": output = validate_analysis(value, read_json(args.sources))
-            elif args.command == "questions": output = aggregate_questions(value, read_json(args.analysis), read_json(args.sources))
-            else:
-                args.output.parent.mkdir(parents=True, exist_ok=True)
-                with args.output.open("x", encoding="utf-8") as handle: handle.write(render_workbench(value))
-                print(json.dumps({"ok": True, "output": args.output.name})); return 0
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("x", encoding="utf-8") as handle: handle.write(render_workbench(value))
+            print(json.dumps({"ok": True, "output": args.output.name})); return 0
         write_new(args.output, output)
     except (DecisionError, OSError, ValueError, KeyError) as exc:
         parser.exit(2, f"research_decisions: {exc}\n")
