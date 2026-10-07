@@ -21,7 +21,7 @@ description: "JC 内容创作系列的总入口：第一次用时讲清做一条
 python3 "<本 SKILL.md 所在目录>/scripts/doctor.py"
 ```
 
-它打印：本系列 11 个 Skill 装没装齐、工作文件夹在哪、本机工具（python3、ffmpeg、node、git）、两样 key（火山引擎、TikHub）配没配、创作工作台装没装、有没有到点没抓的发布数据。
+它打印：本系列 12 个 Skill（总入口 jc 加 11 个）装没装齐、工作文件夹在哪、本机工具（python3、ffmpeg、node、git）、两样 key（火山引擎、TikHub）配没配、创作工作台装没装、有没有到点没抓的发布数据。
 
 - 有「到点的数据」：在回复末尾单独一句提醒，例如「T003 发布满 12 小时了，数据还没抓，要我现在抓吗？」。用户说要，就按 jc-publish-closeout 抓。不重复提醒同一条。
 - 缺 Skill：告诉用户缺哪几个，问要不要照仓库 README 的安装提示词补装。

@@ -101,7 +101,7 @@ def main():
         print(json.dumps(out, ensure_ascii=False, indent=2))
         return 0
     missing = [n for n, ok in installed.items() if not ok]
-    print("Skill：" + ("本系列 11 个都装好了" if not missing else "缺 " + "、".join(missing)) + f"（装在 {skills_root}）")
+    print("Skill：" + ("本系列 12 个都装好了（总入口 jc 加 11 个）" if not missing else "缺 " + "、".join(missing)) + f"（装在 {skills_root}）")
     print("工作文件夹：" + (f"{folder}（{how}）" if folder else f"还没有，第一次用时建在 {wf.DEFAULT}"))
     lack = [t for t, ok in tools.items() if not ok]
     print("本机工具：" + ("python3、ffmpeg、ffprobe、node、git 都有" if not lack else "缺 " + "、".join(lack)))
