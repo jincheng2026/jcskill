@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "jc-koubo-shuping.mg-layout.v1",
+  "canvas": {"width": 720, "height": 1280},
+  "safeZones": {
+    "progressTopMin": 90,
+    "progressTopMax": 110,
+    "heroTopMin": 150,
+    "heroBottomMax": 420,
+    "captionTop": 890
+  },
+  "variants": {
+    "semantic_card": {"left": 30, "top": 160, "width": 660, "height": 174, "paddingBottom": 18},
+    "chapter_title": {"left": 34, "top": 164, "width": 652, "height": 224, "paddingBottom": 18},
+    "contrast_statement": {"left": 34, "top": 164, "width": 652, "height": 226, "paddingBottom": 18},
+    "numbered_list": {"left": 24, "top": 154, "width": 672, "height": 250, "paddingBottom": 16},
+    "prompt_fact": {"left": 28, "top": 160, "width": 664, "height": 220, "paddingBottom": 25},
+    "dual_relation": {"left": 28, "top": 160, "width": 664, "height": 216, "paddingBottom": 23},
+    "bookmark_relation": {"left": 28, "top": 158, "width": 664, "height": 252, "paddingBottom": 24},
+    "agent_flow": {"left": 28, "top": 160, "width": 664, "height": 190, "paddingBottom": 18},
+    "numeric_conclusion": {"left": 28, "top": 160, "width": 664, "height": 234, "paddingBottom": 20}
+  },
+  "inner": {
+    "relationPanelHeight": 116,
+    "relationPanelPaddingBottom": 13,
+    "bookmarkFooterHeight": 34,
+    "bookmarkFooterGap": 14,
+    "promptComparisonGap": 17
+  },
+  "limits": {
+    "itemCountMin": 2,
+    "itemCountMax": 5,
+    "itemLabelMax": 14,
+    "itemNoteMax": 10,
+    "panelLabelMax": 12,
+    "panelTitleMax": 14,
+    "panelSubMax": 12,
+    "quoteMax": 24,
+    "footerMax": 20,
+    "flowCountMin": 3,
+    "flowCountMax": 4,
+    "flowItemMax": 14,
+    "valueMax": 8,
+    "unitMax": 12
+  }
+}

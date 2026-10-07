@@ -12,3 +12,6 @@ skills/**/config.local.*
 skills/**/secrets.*
 *.key
 *.pem
+
+# 运行时缓存
+.remotion/

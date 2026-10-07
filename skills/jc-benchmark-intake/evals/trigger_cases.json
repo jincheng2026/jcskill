@@ -1,0 +1,31 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": ["intake_target", "source", "action"],
+  "positive_concepts": {
+    "intake_target": ["对标内容", "对标素材", "内容素材", "素材库"],
+    "source": ["抖音", "小红书", "视频号", "社媒", "复制", "视频", "图片", "分享链接"],
+    "action": ["入库", "沉淀", "保存", "归档", "放进", "整理进去"]
+  },
+  "negative_patterns": ["生成选题", "做选题", "提取规律", "更新规律", "写口播稿", "爆款分析", "找对标", "搜索对标", "只转写", "只转文字", "不需要入库"],
+  "should_trigger": [
+    {"text": "这是社媒助手复制的抖音内容和下载好的视频，把它作为对标内容入库", "family": "clipboard-video"},
+    {"text": "把这条小红书笔记存进对标素材，图片也一起放进去", "family": "xiaohongshu-images"},
+    {"text": "这条视频号内容我要长期对标，帮我沉淀进素材库", "family": "channels-video"},
+    {"text": "我已经下载了视频，把复制的作品信息和视频整理进对标内容库", "family": "local-video"},
+    {"text": "检查这条对标内容是否重复，没有重复就归档到内容素材", "family": "dedup-intake"},
+    {"text": "把外面复制来的这条社媒内容放进工作文件夹的对标素材", "family": "generic-social"}
+  ],
+  "should_not_trigger": [
+    {"text": "去抖音搜索十条值得对标的内容", "family": "research"},
+    {"text": "根据这些素材生成五个选题", "family": "topic"},
+    {"text": "读取新素材，更新标题规律和开头规律", "family": "pattern"},
+    {"text": "帮我把这个选题写成一条口播稿", "family": "writing"},
+    {"text": "分析这条视频为什么爆", "family": "analysis"}
+  ],
+  "near_neighbor": [
+    {"text": "把这个本地视频只转成逐字稿，不需要入库", "family": "transcription-only"},
+    {"text": "帮我找几个抖音对标账号", "family": "account-research"},
+    {"text": "我有一个新选题，帮我保存到选题库", "family": "topic-capture"},
+    {"text": "把已经入库的十条素材做规律提取", "family": "pattern-extraction"}
+  ]
+}

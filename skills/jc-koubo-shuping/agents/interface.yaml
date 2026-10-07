@@ -1,0 +1,23 @@
+interface:
+  display_name: "口播剪辑"
+  short_description: "双风格竖屏口播检样、成片与局部返修"
+  default_prompt: "Use $jc-koubo-shuping to preview, produce, or repair this vertical talking-head video from its MP4 and SRT; resolve Assembly monochrome or Google semantic color before creating the case."
+compatibility:
+  canonical_format: "agent-skill"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+  activation:
+    mode: "implicit"
+  execution:
+    context: "fork"
+    shell: "bash"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "metadata only; no user media leaves the local machine"
+  degradation:
+    openai: "If Remotion, ffmpeg, ffprobe, fonts, or fixture validation are unavailable, stop and report missing evidence."
+    claude: "If Remotion, ffmpeg, ffprobe, fonts, or fixture validation are unavailable, stop and report missing evidence."
+    generic: "If Remotion, ffmpeg, ffprobe, fonts, or fixture validation are unavailable, stop and report missing evidence."

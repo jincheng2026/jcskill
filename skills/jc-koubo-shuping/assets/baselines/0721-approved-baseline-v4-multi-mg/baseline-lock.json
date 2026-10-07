@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "jc-koubo-shuping.baseline-lock.v1",
+  "baselineId": "0721-approved-baseline-v4-multi-mg",
+  "visualStyleId": "google-semantic",
+  "status": "human-approved-multi-mg-candidate",
+  "inherits": "0708-0721-approved-baseline-v3-single-line",
+  "approvedEvidence": [
+    "0721-01 multi-MG full test attempt 03",
+    "spacing-fix contact sheet for prompt and dual-relation cards",
+    "bookmark-fix contact sheet for outer-card footer containment",
+    "user confirmed the tested direction and requested Skill integration"
+  ],
+  "latestHumanApproval": {
+    "scope": "multi-mg-visual-system-and-layout-fixes",
+    "decision": "accepted_for_skill_integration",
+    "recordedAt": "2026-07-25T00:00:00+08:00",
+    "artifact": "not-distributed",
+    "artifactSha256": "69374130e2570c5cda37182856cb5c911b728f32ba8c029197e7d07f710c9ced",
+    "evidenceSource": "private-human-acceptance-record"
+  },
+  "template": "../../remotion-template",
+  "layoutContract": "../../remotion-template/src/mg-layout.json",
+  "variants": [
+    "semantic_card",
+    "chapter_title",
+    "contrast_statement",
+    "numbered_list",
+    "prompt_fact",
+    "dual_relation",
+    "bookmark_relation",
+    "agent_flow",
+    "numeric_conclusion"
+  ],
+  "preservedSystems": {
+    "progress": "connected Google-color top rail",
+    "accentCycle": ["blue", "red", "yellow", "green"],
+    "captionBaseline": "single-line bilingual separate translucent black plates",
+    "audio": "preserve-source stream copy by default",
+    "heroPolicy": "one readable hero per beat"
+  }
+}

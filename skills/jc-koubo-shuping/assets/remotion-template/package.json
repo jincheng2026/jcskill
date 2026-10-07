@@ -1,0 +1,25 @@
+{
+  "name": "jc-koubo-shuping-remotion-template",
+  "version": "0.8.0-candidate",
+  "private": true,
+  "scripts": {
+    "preview": "remotion preview src/index.tsx",
+    "still": "remotion still src/index.tsx JCKouboOverlay out/still.png --frame=30"
+  },
+  "dependencies": {
+    "@fontsource/archivo-black": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/noto-sans-sc": "^5.2.9",
+    "@remotion/bundler": "4.0.481",
+    "@remotion/cli": "4.0.481",
+    "@remotion/renderer": "4.0.481",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "remotion": "4.0.481"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
+    "typescript": "5.9.3"
+  }
+}

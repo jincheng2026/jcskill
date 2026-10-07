@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "jc-koubo-shuping.baseline-lock.v1",
+  "baselineId": "0726-approved-assembly-mono-v1",
+  "visualStyleId": "assembly-mono",
+  "status": "human-approved-and-published",
+  "approvedEvidence": [
+    "0726-01 complete 146.866213-second Remotion render",
+    "19 semantic beats and 9 reusable MG variants",
+    "user explicitly confirmed this was the final published version"
+  ],
+  "latestHumanApproval": {
+    "scope": "complete-assembly-mono-vertical-talking-head-style",
+    "decision": "final_release_accepted",
+    "recordedAt": "2026-07-26T00:00:00+08:00",
+    "artifact": "not-distributed",
+    "artifactSha256": "ff5b1c1e21a49d824d532b5ba9a25196c861f01c85b409e63677c69137f3546c",
+    "evidenceSource": "private-human-acceptance-record"
+  },
+  "palette": {
+    "primary": ["#FFFFFF", "#F5F5F7"],
+    "secondary": ["#C7C7CC", "#8E8E93", "#636366"],
+    "hairlines": ["rgba(255,255,255,0.17)", "rgba(255,255,255,0.36)"],
+    "captionPlate": "rgba(4,6,8,0.84)"
+  },
+  "typography": {
+    "zhHero": "Noto Sans SC 700/900",
+    "enKicker": "Inter 600/700",
+    "numberHero": "Archivo Black",
+    "caption": "shared single-line bilingual baseline"
+  },
+  "layout": {
+    "designCanvas": [720, 1280],
+    "progressTop": [90, 110],
+    "heroLeftRight": 42,
+    "heroTop": [164, 210],
+    "heroBottomMax": 520,
+    "captionBox": [42, 890, 636, 264]
+  },
+  "preservedSystems": {
+    "progress": "3-5 macro chapters, all labels visible, current white, completed silver, future dim",
+    "captionBaseline": "single-line bilingual separate translucent black plates",
+    "audio": "preserve-source stream copy by default",
+    "heroPolicy": "one readable hero per beat",
+    "sourceColor": "original A-roll and evidence media remain in color"
+  },
+  "forbidden": [
+    "global source desaturation",
+    "solid black top block",
+    "visible thick card shell",
+    "white glow or thick outline",
+    "Google semantic accents inside the default monochrome MG layer"
+  ]
+}

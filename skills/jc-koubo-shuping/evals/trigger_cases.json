@@ -1,0 +1,65 @@
+{
+  "recommended_threshold": 0.48,
+  "should_trigger": [
+    {
+      "text": "用 Remotion 剪这条竖屏口播，素材是 /tmp/a.mp4 和 /tmp/a.srt",
+      "family": "vertical_talking_head"
+    },
+    {
+      "text": "帮我把这个 mp4+srt 做成我们固定的口播包装成片",
+      "family": "mp4_srt_final"
+    },
+    {
+      "text": "用 jc-koubo-shuping 跑一条竖屏口播成片",
+      "family": "explicit_skill"
+    },
+    {
+      "text": "这个竖屏人物讲解视频有 mp4 和 srt，按固定模板包装成片",
+      "family": "vertical_explainer"
+    },
+    {
+      "text": "按 Tzfilm 的节奏剪这条竖屏口播，参考风格已经拆好了，现在直接做成片",
+      "family": "reference_to_final"
+    },
+    {
+      "text": "把这条竖屏口播压缩后再加字幕包装成最终成片，SRT 已经给你",
+      "family": "mixed_transcode_and_final"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "分析这个参考视频为什么好看，先不要写代码",
+      "family": "reference_analysis"
+    },
+    {
+      "text": "把横屏教程剪成讲解视频",
+      "family": "horizontal_video"
+    },
+    {
+      "text": "只帮我把 mp4 转码压缩一下",
+      "family": "pure_transcode"
+    },
+    {
+      "text": "给我拆柱子哥/Tzfilm 的参考风格",
+      "family": "style_replicator"
+    },
+    {
+      "text": "只校对这条竖屏口播的 SRT，不做成片",
+      "family": "subtitle_only"
+    },
+    {
+      "text": "只有一个 mp4，没有 SRT，先别做成片",
+      "family": "missing_required_input"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "先拆参考视频的风格，不渲染",
+      "family": "video_style_replicator"
+    },
+    {
+      "text": "先给我做一个静帧审美 lab，不要渲完整视频",
+      "family": "aesthetic_lab"
+    }
+  ]
+}

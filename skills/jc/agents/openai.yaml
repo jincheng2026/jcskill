@@ -1,0 +1,4 @@
+interface:
+  display_name: "JC 内容创作总入口"
+  short_description: "讲清做一条 AI 自媒体视频的五个阶段、各用哪个 Skill、人在哪一步判断，并帮你选对 Skill"
+  default_prompt: "使用 $jc 带我走一遍新手引导：建好工作文件夹，讲清五个阶段各用哪个 Skill、每一步我要判断什么。"

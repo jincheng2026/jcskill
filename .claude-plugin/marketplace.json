@@ -1,13 +1,46 @@
 {
   "name": "jincheng-skills",
   "owner": {
-    "name": "luozitianyuan"
+    "name": "jincheng2026"
   },
   "metadata": {
-    "description": "锦成的 AI 工作流工具箱 — 从两年深度使用 Claude Code 的实战中提炼，做成 10 个 jc-* skill",
-    "version": "1.0.0"
+    "description": "何锦成的 AI 工作流 Skills：JC 内容创作系列（调研对标、拆解对标、生成内容、发布、复盘，12 个）+ 10 个通用 Skill",
+    "version": "1.1.0"
   },
   "plugins": [
+    {
+      "name": "jc-content",
+      "description": "JC 内容创作系列：做 AI 自媒体视频从调研对标、拆解对标、生成内容（写稿、创作页、转文字、简介、竖屏口播剪辑）、发布建档抓数据到复盘迭代，一个总入口 jc 加 11 个按阶段分工的 Skill；每一步都写清哪里由人判断。",
+      "source": "./",
+      "strict": false,
+      "version": "1.1.0",
+      "category": "content-creation",
+      "keywords": [
+        "content-creation",
+        "short-video",
+        "douyin",
+        "xiaohongshu",
+        "benchmark",
+        "script",
+        "transcription",
+        "review",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc",
+        "./skills/jc-media-research",
+        "./skills/jc-benchmark-intake",
+        "./skills/jc-video-analysis",
+        "./skills/jc-jiaocheng-video",
+        "./skills/jc-zhuanxie",
+        "./skills/jc-gongzuotai-write",
+        "./skills/jc-jianjie",
+        "./skills/jc-koubo-shuping",
+        "./skills/jc-publish-closeout",
+        "./skills/jc-media-review",
+        "./skills/jc-skill-writer"
+      ]
+    },
     {
       "name": "jc-clarifier",
       "description": "万能问题澄清器。AI 不应该在你还没想清楚的时候就帮你行动——用追问漏斗把模糊需求逼成清晰、精确的问题，最终输出一条可直接执行的提示词。",
@@ -15,8 +48,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "thinking-tools",
-      "keywords": ["clarification", "prompt-engineering", "BROK", "thinking", "chinese"],
-      "skills": ["./skills/jc-clarifier"]
+      "keywords": [
+        "clarification",
+        "prompt-engineering",
+        "BROK",
+        "thinking",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-clarifier"
+      ]
     },
     {
       "name": "jc-ask-anything",
@@ -25,8 +66,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "thinking-tools",
-      "keywords": ["question-quality", "xy-problem", "phrasing", "consultation", "chinese"],
-      "skills": ["./skills/jc-ask-anything"]
+      "keywords": [
+        "question-quality",
+        "xy-problem",
+        "phrasing",
+        "consultation",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-ask-anything"
+      ]
     },
     {
       "name": "jc-plan",
@@ -35,8 +84,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "productivity",
-      "keywords": ["task-management", "calendar", "feishu", "scheduling", "chinese"],
-      "skills": ["./skills/jc-plan"]
+      "keywords": [
+        "task-management",
+        "calendar",
+        "feishu",
+        "scheduling",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-plan"
+      ]
     },
     {
       "name": "jc-daily-planning",
@@ -45,8 +102,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "productivity",
-      "keywords": ["daily-planning", "WOOP", "productivity", "focus", "chinese"],
-      "skills": ["./skills/jc-daily-planning"]
+      "keywords": [
+        "daily-planning",
+        "WOOP",
+        "productivity",
+        "focus",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-daily-planning"
+      ]
     },
     {
       "name": "jc-handoff",
@@ -55,8 +120,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "workflow-infrastructure",
-      "keywords": ["handoff", "session", "context-packing", "claude-code", "chinese"],
-      "skills": ["./skills/jc-handoff"]
+      "keywords": [
+        "handoff",
+        "session",
+        "context-packing",
+        "claude-code",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-handoff"
+      ]
     },
     {
       "name": "jc-source-of-truth",
@@ -65,8 +138,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "workflow-infrastructure",
-      "keywords": ["source-of-truth", "index", "documentation", "project-structure", "chinese"],
-      "skills": ["./skills/jc-source-of-truth"]
+      "keywords": [
+        "source-of-truth",
+        "index",
+        "documentation",
+        "project-structure",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-source-of-truth"
+      ]
     },
     {
       "name": "jc-learn-anything",
@@ -75,8 +156,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "learning",
-      "keywords": ["learning", "study", "bloom", "socratic", "chinese"],
-      "skills": ["./skills/jc-learn-anything"]
+      "keywords": [
+        "learning",
+        "study",
+        "bloom",
+        "socratic",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-learn-anything"
+      ]
     },
     {
       "name": "jc-write",
@@ -85,8 +174,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["writing", "originality", "style-dna", "socratic", "chinese"],
-      "skills": ["./skills/jc-write"]
+      "keywords": [
+        "writing",
+        "originality",
+        "style-dna",
+        "socratic",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-write"
+      ]
     },
     {
       "name": "jc-wechat-publish",
@@ -95,8 +192,17 @@
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["wechat", "publishing", "markdown", "gemini", "html", "chinese"],
-      "skills": ["./skills/jc-wechat-publish"]
+      "keywords": [
+        "wechat",
+        "publishing",
+        "markdown",
+        "gemini",
+        "html",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-wechat-publish"
+      ]
     },
     {
       "name": "jc-zhuagongzhonghao",
@@ -105,8 +211,16 @@
       "strict": false,
       "version": "1.0.0",
       "category": "content-creation",
-      "keywords": ["wechat", "content-scraping", "ranking", "wilson-score", "chinese"],
-      "skills": ["./skills/jc-zhuagongzhonghao"]
+      "keywords": [
+        "wechat",
+        "content-scraping",
+        "ranking",
+        "wilson-score",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/jc-zhuagongzhonghao"
+      ]
     }
   ]
 }

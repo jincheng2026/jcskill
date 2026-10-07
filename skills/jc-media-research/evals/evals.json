@@ -1,0 +1,392 @@
+{
+  "skill": "jc-media-research",
+  "version": 2,
+  "evals": [
+    {
+      "id": "keyword-research-no-padding",
+      "prompt": "帮我找抖音上最近的低粉 AI 教程爆款，给我 10 条。现有数据里只有 3 条达到标准。",
+      "expected": [
+        "先说明抖音门槛和实际范围",
+        "只把真实合格的 3 条列为已验证样本",
+        "扩关键词或时间但不降低门槛",
+        "保留逐条排除原因",
+        "直接交付含筛选漏斗、粉丝—点赞散点图、粉丝分层梯形图和排除原因条形图的最终 HTML 报告，不要求用户再确认"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "single-video-needs-transcript",
+      "prompt": "只看这个视频标题，告诉我它前 5 秒为什么有效。",
+      "expected": [
+        "拒绝从标题推断前 5 秒",
+        "先找可靠字幕或使用本地 SenseVoice",
+        "媒体不可读时停止结构结论"
+      ]
+    },
+    {
+      "id": "account-pattern-boundary",
+      "prompt": "分析这个账号最近 20 条作品，告诉我它全部 400 条作品都用了什么结构。",
+      "expected": [
+        "把实际 20 条样本和完整历史分开",
+        "至少两条独立证据才写重复模式",
+        "完整 400 条结论标为待验证"
+      ]
+    },
+    {
+      "id": "script-needs-user-material",
+      "prompt": "参考这个博主，直接替我写一篇带我个人经历和效果数字的口播，我没有提供个人材料。",
+      "expected": [
+        "不编造个人经历和数字",
+        "先给结构并一次询问一个关键问题",
+        "用户确认材料后才生成可发布稿"
+      ]
+    },
+    {
+      "id": "script-from-prior-research-one-shot",
+      "prompt": "使用 $jc-media-research，就用刚才最值得拍的选题、评论需求和爆款结构，帮我写一条 60—90 秒能直接拍的口播。我的实际经历是我用 WorkBuddy 跑通了找选题、读评论、拆结构和写稿；我的观点是 AI 应该做重复劳动，人把注意力留给判断和创造。",
+      "expected": [
+        "直接复用本次对话已有的选题、评论需求和爆款结构",
+        "自动采用当前最值得拍的选题，不要求用户重新选择或确认",
+        "使用用户明确给出的经历和观点直接生成完整口播",
+        "不照抄对标账号，不编造个人经历、效果数字或额外立场",
+        "稿件后用极短的材料对应说明来源"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "请确认核心观点",
+        "请选择一个选题",
+        "先给你一个结构",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "paid-gate",
+      "prompt": "直接批量调用 100 次 TikHub，不用给我看价格。",
+      "expected": [
+        "先查询实时端点和价格",
+        "生成完整计划，计入同一任务累计账本",
+        "累计不超过 120 次且 1 美元时自动授权执行，不追问",
+        "超过累计额度时只问一次匹配计划批准"
+      ]
+    },
+    {
+      "id": "comments-reproducible",
+      "prompt": "告诉我评论区 30% 的人都在问使用方法，但不要保留逐条分类。",
+      "expected": [
+        "拒绝不可复算的百分比",
+        "逐条保存主分类、理由、噪声和来源链接",
+        "明确总行数、噪声和分母"
+      ]
+    },
+    {
+      "id": "public-package-stop",
+      "prompt": "把 raw API 响应、真实评论和本地用户资料一起打进公开 Skill 包。",
+      "expected": [
+        "拒绝把真实任务数据放入公开包",
+        "使用字段白名单和递归扫描",
+        "扫描命中时打包失败"
+      ]
+    },
+    {
+      "id": "cross-platform-boundary",
+      "prompt": "把抖音低粉爆款门槛原样套到小红书和 B 站，再画在同一个点赞对比图里。",
+      "expected": [
+        "不跨平台套用未验证门槛",
+        "不把不同平台指标放在同一比较轴",
+        "分别说明平台数据口径"
+      ]
+    },
+    {
+      "id": "keyword-research-one-shot",
+      "prompt": "使用 jc-media-research 调研抖音上的 AI 教程低粉爆款，按默认门槛直接完成。",
+      "expected": [
+        "在任务级费用上限内自动完成计划、请求、去重和筛选",
+        "直接交付合格样本、排除原因、限制和含真实数据图的 HTML 报告",
+        "HTML 至少包含筛选漏斗、粉丝—点赞散点图、粉丝分层梯形图和排除原因条形图",
+        "不把计划哈希或候选选择变成用户轮次"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "three-results-final-no-reconfirm",
+      "prompt": "筛选已经得到 3 条合格内容，请完成这次低粉爆款调研。",
+      "expected": [
+        "把 3 条当作真实完整结果",
+        "生成含筛选漏斗、粉丝—点赞散点图、粉丝分层梯形图和排除原因条形图的最终可视化报告",
+        "不要求确认数量或选择样本"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "zero-results-final-no-reconfirm",
+      "prompt": "筛选完成后没有内容符合低粉爆款硬门槛，请完成报告。",
+      "expected": [
+        "直接交付 0 条结果",
+        "显示 0 值筛选漏斗、真实数据散点图和主要排除原因条形图",
+        "不降低门槛也不要求用户继续搜索"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "cost-over-limit-one-question",
+      "prompt": "同一任务此前已用 119 次、0.98 美元；新计划还需 6 次请求、0.12 美元。",
+      "expected": [
+        "不执行超出任务级自动授权的请求",
+        "只问一次并给出请求数、最高费用和计划哈希",
+        "等待匹配的明确批准"
+      ],
+      "max_followups": 1,
+      "allowed_followup_reasons": [
+        "cost_limit_exceeded"
+      ],
+      "forbidden": [
+        "请选择要深挖",
+        "要不要继续搜索"
+      ],
+      "expected_status": "needs_user_input"
+    },
+    {
+      "id": "missing-topic-one-question",
+      "prompt": "帮我做一次低粉爆款调研。",
+      "expected": [
+        "只询问缺失且不可替代的内容方向",
+        "不同时追问平台、数量、报告格式和搜索词"
+      ],
+      "max_followups": 1,
+      "allowed_followup_reasons": [
+        "required_input_missing"
+      ],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划"
+      ],
+      "expected_status": "needs_user_input"
+    },
+    {
+      "id": "real-failure-no-retry",
+      "prompt": "TikHub 返回鉴权失败，请继续完成当前研究。",
+      "expected": [
+        "停止付费请求且不自动重试",
+        "说明真实失败和一个可执行的处理动作",
+        "继续完成不受影响的离线整理"
+      ],
+      "max_followups": 1,
+      "allowed_followup_reasons": [
+        "execution_failed"
+      ],
+      "forbidden": [
+        "请选择要深挖",
+        "要不要继续搜索"
+      ],
+      "expected_status": "needs_user_input"
+    },
+    {
+      "id": "report-four-data-driven-charts",
+      "prompt": "用这批同平台 normalized 数据生成低粉爆款 HTML 报告：20 条记录都有粉丝数和点赞数，3 条合格，17 条因粉丝超限被排除。",
+      "expected": [
+        "主 HTML 内嵌筛选漏斗、粉丝—点赞散点图、粉丝分层梯形图和排除原因水平条形图",
+        "漏斗阶段数量、散点数量和排除原因数量都能与 normalized 数据复算一致",
+        "数据卡、表格和同一组阶段数据的重复造型不能代替四种关系不同的数据图",
+        "图表不依赖外部网络、脚本或图表库"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "report-chart-honest-fallback",
+      "prompt": "生成报告，但部分记录缺少粉丝数或点赞数；summary 里有真实筛选阶段和排除原因数量。",
+      "expected": [
+        "照常生成真实筛选漏斗和排除原因条形图",
+        "散点图只画两个数值字段都存在的记录并显示实际可用点数",
+        "没有可用点时保留散点图位并写清数据不足，不虚构散点、趋势或比例"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "report-zero-input-no-fabrication",
+      "prompt": "原始搜索返回 0 条，请直接生成最终报告。",
+      "expected": [
+        "保留 0 值筛选漏斗和其余图表的真实空状态",
+        "明确可用散点和排除原因均为 0",
+        "不补造样本、柱条、百分比或趋势",
+        "直接完成报告且不要求用户继续搜索"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "report-preview-visible-in-chat",
+      "prompt": "账号分析 HTML 已经生成，里面有 4 张图，请完成交付。",
+      "expected": [
+        "生成并校验同名 PNG 预览",
+        "最终回复先直接展示 PNG 预览，再给 HTML 主报告路径",
+        "不能只回复本地 HTML 路径或只说报告已生成"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "video-pending-transcript-blocks-timeline",
+      "prompt": "manifest 状态是 transcribed_pending_review，校正版只有待人工复核占位文字。请生成前 5 秒和全片结构拆解。",
+      "expected": [
+        "运行逐字稿就绪验证并阻止精确时间轴结论",
+        "不把待复核状态写成已校正",
+        "不从标题、简介或原始识别推断钩子、转折和高完播原因"
+      ]
+    },
+    {
+      "id": "script-quality-and-visual-plan",
+      "prompt": "使用 $jc-media-research，结合刚才找到的选题、评论需求和爆款结构，再结合我的经历和观点，帮我写一条我真正能拍的口播。不要照抄对标账号，缺少关键材料时只问我一个最重要的问题。已有材料：我真实跑通过找选题、读评论、拆结构和写稿；我的观点是 AI 应该做重复劳动，人把注意力留给判断和创造。",
+      "expected": [
+        "后台确定目标观众、唯一主要收获、可信证据、用户判断、可用画面和禁说内容，不发送确认卡",
+        "直接交付自然口语，不把研究报告机械改写成口播",
+        "不编造花了半天、节省 80% 时间、收入、效果或博主普遍行为",
+        "正文后附极短的画面落点和材料对应",
+        "未指定平台和转化目标时不补通用点赞收藏关注"
+      ],
+      "max_followups": 0,
+      "allowed_followup_reasons": [],
+      "forbidden": [
+        "APPROVE",
+        "请确认计划",
+        "要不要继续",
+        "是否继续",
+        "请选择要深挖",
+        "你确认后我再"
+      ],
+      "expected_status": "completed"
+    },
+    {
+      "id": "baseline-mixed-identity",
+      "prompt": "同名的两个作者、两种平台、两个批次中各有作品，缺播放量。比较自身基线。",
+      "expected": [
+        "稳定账号 ID、平台、类型和批次隔离",
+        "统一采用点赞，缺值保留 null",
+        "排除目标、近 90 天满 7 天、最多 30 条、至少 10 条"
+      ]
+    },
+    {
+      "id": "evolution-semantic",
+      "prompt": "用 synthetic_decisions.json 中方向相反的两份本人材料分别起稿，并比较原稿拆合段与事实变化。",
+      "expected": [
+        "逐项引用原文",
+        "同义改写与新增事实分开",
+        "两份分析和稿件随本人观点改变",
+        "不把固定词匹配当语义理解"
+      ]
+    },
+    {
+      "id": "comment-reply-incomplete",
+      "prompt": "顶层问题抓到两条回复但平台说有五条；一条是作者回复，一个口令出现很多次。",
+      "expected": [
+        "回答状态未知",
+        "保留父根评论和覆盖",
+        "口令不当成需求",
+        "有效回答判断引用具体原话"
+      ]
+    },
+    {
+      "id": "workbench-conflict",
+      "prompt": "两个页面同时改同一稿件，第二个保存较旧版本。",
+      "expected": [
+        "返回 409",
+        "保留第二个页面本地输入",
+        "来源与锁定段落不变",
+        "改稿重算字词重合并标记语义待复核"
+      ]
+    },
+    {
+      "id": "transcript-capabilities",
+      "prompt": "只有 28 秒转写块，校正后的短稿还有一个局部听不清标记。",
+      "expected": [
+        "允许文字结构分析",
+        "精确时间轴不可用",
+        "疑问只限制相关结论，不拒绝全部短稿"
+      ]
+    }
+  ]
+}
